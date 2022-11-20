@@ -1,0 +1,43 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.chat{
+    float: left;
+    width: 30%;
+    height: 100vh;
+    background-color: aquamarine;
+    display: block;
+    overflow: hidden;
+}
+
+.chatContainer{
+    overflow: scroll;
+    height:90%;
+}
+
+.drawingContainer{
+    height: 30%;
+    width: 100%;
+}
+
+.drawing{
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.drawingField{
+    width: 70%;
+    height: 100%;
+    display: block;
+    float: right;
+    overflow: hidden
+}
+
+.canvas{
+    width: 100%;
+    height: 100%;
+    background-color: yellow;
+}

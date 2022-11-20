@@ -1,0 +1,10 @@
+<div class="chat">
+    <div class="chatContainer">
+        <div class="drawingContainer" *ngFor='let drawing of imagesPaths'>
+            <img class="drawing" src={{drawing}}>
+        </div>
+    </div>
+    <input class="textInput">
+    <button>Send</button>
+</div>
+<app-drawing-canvas class="drawingField"></app-drawing-canvas>
