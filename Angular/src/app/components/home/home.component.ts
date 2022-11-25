@@ -16,9 +16,11 @@ export class HomeComponent implements OnInit {
   imagesPaths: any = [];
   drawingsList: any = [];
   conversionCanvas: any;
+  messageState: string;
 
   constructor(public http: HttpClient) {
     this.conversionCanvas = document.createElement("canvas");
+    this.messageState = "Idle";
     console.log(this.drawingCanvas)
    }
 
@@ -31,12 +33,11 @@ export class HomeComponent implements OnInit {
   }
 
   loadImages(){
+    this.messageState = "Loading";
+
     this.http.get("http://localhost:3000/api/drawings").subscribe( x => 
     {
       this.drawingsList = x;
-      //console.log("Length of list obtained: ", this.drawingsList.length)
-
-      //let iteration = 0;
 
       for(let item of this.drawingsList){
         let img = new Image();
@@ -55,20 +56,10 @@ export class HomeComponent implements OnInit {
 
 
         conversionContext.putImageData(idata, 0, 0);
-        //img.src = this.conversionCanvas.toDataURL("image/png");
         this.imagesPaths.push(this.conversionCanvas.toDataURL("image/png"));
-
-
-        /*img.classList.add("messageDrawing");
-
-        let newDiv = document.createElement("div");
-        newDiv.classList.add("drawingContainer");
-
-        newDiv.appendChild(img)
-
-        this.chatContainer.nativeElement.appendChild(newDiv)
-        iteration++;*/
       }
+
+      this.messageState = "Idle";
     }
     );
   }
@@ -76,9 +67,9 @@ export class HomeComponent implements OnInit {
   
 
   sendImage(): void{
+    this.messageState = "Sending";
+
     let imagedata = this.drawingCanvas.getCanvasImage()
-    let stringified = JSON.stringify(this.drawingCanvas.getCanvasImage())
-    let parsed = JSON.parse(stringified)
 
     let drawingMessage: DrawingMessage = {
       data: imagedata.data,
@@ -86,8 +77,10 @@ export class HomeComponent implements OnInit {
       height: imagedata.height,
       colorSpace: imagedata.colorSpace
     }
+
     this.http.post("http://localhost:3000/api/drawings", {drawing: drawingMessage}).subscribe( x => 
-    console.log(x));
+      this.messageState = "Idle"
+    );
   }
 
 }
