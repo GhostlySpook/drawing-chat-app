@@ -304,4 +304,8 @@ export class DrawingCanvasComponent implements OnInit {
       return coordinates;
   }
 
+  getCanvasImage(){
+    return this.context.getImageData(0, 0, this.drawingCanvas.width, this.drawingCanvas.height)
+  }
+
 }

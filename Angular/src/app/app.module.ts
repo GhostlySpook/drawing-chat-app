@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http'
 
 import { app_routing } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,7 @@ import { DrawingCanvasComponent } from './components/drawing-canvas/drawing-canv
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     app_routing
     /*AppRoutingModule*/
   ],

@@ -4,8 +4,9 @@ const Drawings = require('../models/drawings-model.js');
 // Reaction function for get reaction route
 const newDrawing = (req, res, next) => {
     try {
-        Drawings.add(req.params.drawing)
-        res.json({message: "Save successful"})
+        Drawings.add(req.body.drawing);
+        console.log("Added drawing");
+        res.json({message: "Save successful"});
     } catch (error) {
         console.log("Exception: " + error);
     }
@@ -13,7 +14,9 @@ const newDrawing = (req, res, next) => {
 
 const getAllDrawings = async (req, res, next) => {
     try{
-        return res.json(Drawings.getAll());
+        drawing_list = await Drawings.getAll();
+        console.log("Giving all", drawing_list.length);
+        return res.json(drawing_list);
     }
     catch(error){
         console.log(error);

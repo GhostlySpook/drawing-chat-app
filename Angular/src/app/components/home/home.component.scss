@@ -18,14 +18,15 @@ body {
 }
 
 .drawingContainer{
-    height: 30%;
+    height: 30%!important;
     width: 100%;
 }
 
-.drawing{
+.messageDrawing{
     max-height: 100%;
     max-width: 100%;
     object-fit: cover;
+    background-color: white;
 }
 
 .drawingField{
