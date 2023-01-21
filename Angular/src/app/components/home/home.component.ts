@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DrawingCanvasComponent } from '../drawing-canvas/drawing-canvas.component';
 import { DrawingMessage } from 'src/app/models/drawingmessage';
+import { DrawingService } from 'src/app/services/drawing.service';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit {
   conversionCanvas: any;
   messageState: string;
 
-  constructor(public http: HttpClient) {
+  constructor(private drawingService: DrawingService) {
     this.conversionCanvas = document.createElement("canvas");
     this.messageState = "Idle";
     console.log(this.drawingCanvas)
@@ -35,8 +36,8 @@ export class HomeComponent implements OnInit {
   loadImages(){
     this.messageState = "Loading";
 
-    this.http.get("http://localhost:3000/api/drawings").subscribe( x => 
-    {
+    this.drawingService.getDrawings().then((x) => {
+      console.log("Drawing list", x)
       this.drawingsList = x;
 
       for(let item of this.drawingsList){
@@ -60,8 +61,7 @@ export class HomeComponent implements OnInit {
       }
 
       this.messageState = "Idle";
-    }
-    );
+    })
   }
 
   
@@ -78,9 +78,9 @@ export class HomeComponent implements OnInit {
       colorSpace: imagedata.colorSpace
     }
 
-    this.http.post("http://localhost:3000/api/drawings", {drawing: drawingMessage}).subscribe( x => 
-      this.messageState = "Idle"
-    );
+    this.drawingService.sendDrawing(drawingMessage)
+
+    this.messageState = "Idle"
   }
 
 }
