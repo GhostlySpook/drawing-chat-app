@@ -73,6 +73,7 @@ export class DrawingCanvasComponent implements OnInit {
     this.context.lineWidth = 10;
     this.context.lineCap = "round";
     this.context.lineJoin = "round";
+    this.context.willReadFrequently = true;
 
     this.drawingCanvas.width = window.innerWidth * 0.70;
     this.drawingCanvas.height = window.innerHeight;

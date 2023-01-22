@@ -27,17 +27,17 @@ export class DrawingService {
   getDrawings(){
     return new Promise<any>((resolve, reject) => {
       this.http.get("http://localhost:3000/api/drawings").subscribe((x: any) => {
-      console.log("Gotten drawings", x)
+      //console.log("Gotten drawings", x)
       resolve(x);
     })
     })
   }
 
   getDrawingsPastId(drawingId: number){
-    console.log("Before promise");
+    //console.log("Before promise");
     return new Promise<any>((resolve, reject) => {
       this.http.get("http://localhost:3000/api/drawings/pastId/" + drawingId).subscribe((x: any) => {
-      console.log("Gotten drawings", x)
+      //console.log("Gotten drawings", x)
       resolve(x);
     })
     })

@@ -5,8 +5,8 @@
         </div>
     </div>
     <input class="textInput">
-    <button (click)="sendImage()">Send</button>
-    <button (click)="loadImages()">Load</button>
+    <button  #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled">Send</button>
+    <button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button>
     <p>Message State: {{messageState}}</p>
 </div>
 <app-drawing-canvas #drawingCanvas class="drawingField"></app-drawing-canvas>
