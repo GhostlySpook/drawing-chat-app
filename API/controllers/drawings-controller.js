@@ -23,7 +23,19 @@ const getAllDrawings = async (req, res, next) => {
     }
 };
 
+const getDrawingsPastId = async (req, res, next) => {
+    try{
+        drawing_list = await Drawings.getPastId(req.params.drawingId);
+        console.log("Controller from Id length:", drawing_list.length);
+        return res.json(drawing_list);
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
 module.exports = { 
     newDrawing,
-    getAllDrawings
+    getAllDrawings,
+    getDrawingsPastId
 };

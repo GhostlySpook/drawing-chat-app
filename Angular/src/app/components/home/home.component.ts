@@ -36,7 +36,28 @@ export class HomeComponent implements OnInit {
   loadImages(){
     this.messageState = "Loading";
 
-    this.drawingService.getDrawings().then((x) => {
+    let lastDrawingNo;
+    console.log("Drawing list length: ", this.drawingsList.length);
+    console.log("Drawing list: ", this.drawingsList);
+
+    if(this.drawingsList.length > 0){
+      //Get the biggest Id number
+      lastDrawingNo = this.drawingsList.reduce((accumulator: number, currentValue: any) => {
+        if(accumulator < currentValue.id){
+          return currentValue.id;
+        }
+        else{
+          return accumulator;
+        }
+      }, /*Initial value*/ -1);
+    }
+    else{
+      lastDrawingNo = -1;
+    }
+
+    console.log("Last Drawing Number: ", lastDrawingNo);
+
+    this.drawingService.getDrawingsPastId(lastDrawingNo).then((x) => {
       console.log("Drawing list", x)
       this.drawingsList = x;
 
@@ -62,6 +83,33 @@ export class HomeComponent implements OnInit {
 
       this.messageState = "Idle";
     })
+
+    /*this.drawingService.getDrawings().then((x) => {
+      console.log("Drawing list", x)
+      this.drawingsList = x;
+
+      for(let item of this.drawingsList){
+        let img = new Image();
+
+        let total = item.width * item.height * 4;
+        let u8 = new Uint8ClampedArray(total);
+
+        for(let i = 0; i < total; i++){
+          u8[i] = item.data[i];
+        }
+
+        let idata = new ImageData(u8, item.width, item.height, { colorSpace: item.colorSpace })
+        this.conversionCanvas.width = item.width;
+        this.conversionCanvas.height = item.height;
+        let conversionContext = this.conversionCanvas.getContext("2d");
+
+
+        conversionContext.putImageData(idata, 0, 0);
+        this.imagesPaths.push(this.conversionCanvas.toDataURL("image/png"));
+      }
+
+      this.messageState = "Idle";
+    })*/
   }
 
   
@@ -78,9 +126,10 @@ export class HomeComponent implements OnInit {
       colorSpace: imagedata.colorSpace
     }
 
-    this.drawingService.sendDrawing(drawingMessage)
-
-    this.messageState = "Idle"
+    this.drawingService.sendDrawing(drawingMessage).then((x) => {
+      console.log(x);
+      this.messageState = "Idle";
+    });
   }
 
 }
