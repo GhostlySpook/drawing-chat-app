@@ -14,7 +14,53 @@ body {
 
 .chatContainer{
     overflow: scroll;
+    z-index: 104;
     height:90%;
+}
+
+.toolbar{
+    height: 100vh; /* Full-height: remove this if you want "auto" height */
+    width: 5%; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    left: 30%;
+    //z-index: 4; /* Stay on top */
+    //top: 0; /* Stay at the top */
+    background-color: #111; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    /*padding-top: 10px;*/
+}
+
+.toolButton{
+    /*padding: 6px 8px 6px 25%;*/
+    margin: 0;
+    /*padding-bottom: 1px;*/
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    cursor: pointer;
+    /*height: 10%;*/
+    width: 93%;
+    border-style: solid;
+    border-color: #818181;
+}
+
+#redoContainer{
+    width: 85%;
+    padding-top:10%;
+    padding-left: 5%;
+}
+
+#redoContainer .toolButton{
+    width: 40%;
+    left: 0;
+    padding: 0;
+    display: inline;
+}
+
+.toolButton.last{
+    bottom: 50px;
+    position:absolute;
 }
 
 .drawingContainer{

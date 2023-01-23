@@ -9,4 +9,23 @@
     <button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button>
     <p>Message State: {{messageState}}</p>
 </div>
+<div class="toolbar center" id="divSideBar">
+    <input type="image" src="assets/img/btnBlackPencil.png" class="toolButton" id="btnBlackPencil"/>
+    <input type="image" src="assets/img/btnPencilMenu.png" class="toolButton" id="btnPencilMenu"  style="display: none"/>
+    <div id="pencilMenu">
+        <input type="range" id="rangeSize" min="2" max="20" step="2">
+    </div>
+
+    <input type="image" src="assets/img/btnBlackBucket.png" class="toolButton" id="btnBlackBucket"/>
+    <input type="image" src="assets/img/btnEraser.png" class="toolButton" id="btnEraser"/>
+    <input type="image" src="assets/img/btnBomb.png" class="toolButton" id="btnBomb" style="display: none"/>
+
+    <div class="toolButton" id="btnColourContainer"></div>
+    <div id="colourMenu"></div>
+    
+    <div id="redoContainer">
+        <input type="image" src="assets/img/btnUndo.png" class="toolButton" id="btnUndo"/>
+        <input type="image" src="assets/img/btnRedo.png" class="toolButton" id="btnRedo"/>
+    </div>
+</div>
 <app-drawing-canvas #drawingCanvas class="drawingField"></app-drawing-canvas>
