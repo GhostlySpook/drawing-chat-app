@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     //Load chat images-----PLACEHOLDER
     //this.imagesPaths = ['/assets/img/Aurora.png', '/assets/img/ezgif-3-67ee4f7ac2.gif', 'assets/img/Fe4L639VUAA5oGN.png', 'assets/img/Giratina kart.PNG', 'assets/img/red crayon.png']
-    console.log("Start on init.");
+    //console.log("Start on init.");
     this.messageState = "Loading";
     this.isButtonEnabled = false;
     this.loadImages();
@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
 
   loadImages(){ 
     return new Promise<any>((resolve, reject) => {
-      console.log("Start load images");
+      //console.log("Start load images");
       this.messageState = "Loading";
       this.isButtonEnabled = false;
       let lastDrawingNo;
@@ -100,8 +100,11 @@ export class HomeComponent implements OnInit {
 
         this.messageState = "Idle";
         this.isButtonEnabled = true;
+      }).catch((reason) => {
+        console.error("Error retrieving drawings:", reason);
+        reject("Rejected Drawing Past Id Promise");
+        this.messageState = "Connection Error";
       })
-      console.log("Finish load images");
       resolve(true);
     })
   }
@@ -124,9 +127,11 @@ export class HomeComponent implements OnInit {
       }
 
       this.drawingService.sendDrawing(drawingMessage).then((x) => {
-        console.log(x);
+
         this.loadImages().then((value) => {
           this.messageState = "Idle";
+        }).catch((reason) => {
+          console.error("Error loading drawings:", reason);
         });
       });
 

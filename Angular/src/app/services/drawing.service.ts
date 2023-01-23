@@ -36,10 +36,15 @@ export class DrawingService {
   getDrawingsPastId(drawingId: number){
     //console.log("Before promise");
     return new Promise<any>((resolve, reject) => {
-      this.http.get("http://localhost:3000/api/drawings/pastId/" + drawingId).subscribe((x: any) => {
-      //console.log("Gotten drawings", x)
-      resolve(x);
-    })
+      try{
+        this.http.get("http://localhost:3000/api/drawings/pastId/" + drawingId).subscribe(
+          (x: any) => { resolve(x); },
+          (error: any) => { reject(error) }
+          ) 
+      }
+      catch(e){
+        reject("Caught error getting drawings past id: " + e);
+      }
     })
   }
 

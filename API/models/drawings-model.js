@@ -9,7 +9,7 @@ const Drawings = {
       try{ 
         drawing.id = drawingId++;
         drawing_list.push(drawing);
-        console.log("drawings-model.js Drawing list length after adding: ", drawing_list.length)
+        //console.log("drawings-model.js Drawing list length after adding: ", drawing_list.length)
       }catch (error) {
         return error;
       }
@@ -17,7 +17,7 @@ const Drawings = {
 
     async getAll(){
       try{
-        console.log("drawings-model.js Drawing list length while getting all: ", drawing_list.length)
+        //console.log("drawings-model.js Drawing list length while getting all: ", drawing_list.length)
         return drawing_list;
       } catch (error){
         return error;

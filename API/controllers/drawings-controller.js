@@ -5,7 +5,7 @@ const Drawings = require('../models/drawings-model.js');
 const newDrawing = (req, res, next) => {
     try {
         Drawings.add(req.body.drawing);
-        console.log("Added drawing");
+        //console.log("Added drawing");
         res.json({message: "Save successful"});
     } catch (error) {
         console.log("Exception: " + error);
@@ -15,7 +15,7 @@ const newDrawing = (req, res, next) => {
 const getAllDrawings = async (req, res, next) => {
     try{
         drawing_list = await Drawings.getAll();
-        console.log("Giving all", drawing_list.length);
+        //console.log("Giving all", drawing_list.length);
         return res.json(drawing_list);
     }
     catch(error){
@@ -26,7 +26,7 @@ const getAllDrawings = async (req, res, next) => {
 const getDrawingsPastId = async (req, res, next) => {
     try{
         drawing_list = await Drawings.getPastId(req.params.drawingId);
-        console.log("Controller from Id length:", drawing_list.length);
+        //console.log("Controller from Id length:", drawing_list.length);
         return res.json(drawing_list);
     }
     catch(error){

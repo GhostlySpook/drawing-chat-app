@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "dist/drawing-chat-app",
+    "site": "drawing-chat-test",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
