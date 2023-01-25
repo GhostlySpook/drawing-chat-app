@@ -76,14 +76,16 @@ export class DrawingCanvasComponent implements OnInit {
     this.drawingCanvas = <HTMLCanvasElement> document.getElementById("drawingCanvas")
     this.context = this.drawingCanvas.getContext("2d");
 
+    this.drawingCanvas.width = window.innerWidth * 0.70;
+    this.drawingCanvas.height = window.innerHeight;
+  }
+
+  ngAfterViewInit() {
     this.context.fillStyle = "#ffffff";
     this.context.lineWidth = 10;
     this.context.lineCap = "round";
     this.context.lineJoin = "round";
     this.context.willReadFrequently = true;
-
-    this.drawingCanvas.width = window.innerWidth * 0.70;
-    this.drawingCanvas.height = window.innerHeight;
   }
 
   //Drawing methods
