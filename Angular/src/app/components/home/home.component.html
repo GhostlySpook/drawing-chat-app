@@ -5,35 +5,45 @@
         </div>
     </div>
     <input class="textInput">
-    <button  #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled">Send</button>
+    <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled">Send</button>
     <button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button>
     <p>Message State: {{messageState}}</p>
 </div>
 
 <!--Toolbar-->
 <div class="toolbar center" id="divSideBar">
+    <!--Pencil button-->
     <input (click)="pencilButtonClickHandler()" type="image" src="assets/img/btnBlackPencil.png" class="toolButton" id="pencilButton" 
+        [style.display]="this.drawingCanvas.toolSelected == 1 ? 'none' : 'block'"/>
+    <input (click)="pencilMenuButtonClickHandler()" type="image" src="assets/img/btnPencilMenu.png" class="toolButton" id="pencilMenuButton"
         [class.selected]="this.drawingCanvas.toolSelected == 1"
-        [style.display]="'block'"/>
-    <input (click)="pencilMenuButtonClickHandler()" type="image" src="assets/img/btnPencilMenu.png" class="toolButton" id="pencilMenuButton"  style="display: none"/>
+        [style.display]="this.drawingCanvas.toolSelected == 1 ? 'block' : 'none'"/>
     <div id="pencilMenu">
         <input (change)="sizeRangeChangeHandler()" type="range" id="sizeRange" min="2" max="20" step="2">
     </div>
 
+    <!--Bucket button-->
     <input (click)="bucketButtonClickHandler()" type="image" src="assets/img/btnBlackBucket.png" class="toolButton" id="bucketButton"
         [class.selected]="this.drawingCanvas.toolSelected == 2"
         [style.display]="'block'"/>
-    <input (click)="eraserButtonClickHandler()" type="image" src="assets/img/btnEraser.png" class="toolButton" id="eraserButton"
-        [class.selected]="this.drawingCanvas.toolSelected == 3"
-        [style.display]="'block'"/>
-    <input (click)="bombButtonClickHandler()" type="image" src="assets/img/btnBomb.png" class="toolButton" id="bombButton" style="display: none"/>
 
+    <!--Eraser button-->
+    <input (click)="eraserButtonClickHandler()" type="image" src="assets/img/btnEraser.png" class="toolButton" id="eraserButton"
+        [style.display]="this.drawingCanvas.toolSelected == 3 ? 'none' : 'block'"/>
+    <input (click)="bombButtonClickHandler()" type="image" src="assets/img/btnBomb.png" class="toolButton" id="bombButton" style="display: none"
+        [class.selected]="this.drawingCanvas.toolSelected == 3"
+        [style.display]="this.drawingCanvas.toolSelected == 3 ? 'block' : 'none'"/>
+
+    <!--Colour button-->
     <div class="toolButton" id="btnColourContainer"></div>
     <div id="colourMenu"></div>
     
+    <!--Redo buttons-->
     <div id="redoContainer">
         <input (click)="undoButtonClickHandler()" type="image" src="assets/img/btnUndo.png" class="toolButton" id="undoButton"/>
         <input (click)="redoButtonClickHandler()" type="image" src="assets/img/btnRedo.png" class="toolButton" id="redoButton"/>
     </div>
 </div>
+
+<!--Drawing canvas-->
 <app-drawing-canvas #drawingCanvas class="drawingField"></app-drawing-canvas>
