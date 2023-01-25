@@ -39,6 +39,8 @@ export class HomeComponent implements OnInit {
   isPencilMenuDisplayed: boolean;
   isColourMenuDisplayed: boolean;
 
+  brushRadius: any;
+
   constructor(private drawingService: DrawingService) {
     this.conversionCanvas = document.createElement("canvas");
     this.messageState = "Idle";
@@ -55,6 +57,8 @@ export class HomeComponent implements OnInit {
 
     this.isPencilMenuDisplayed = false;
     this.isColourMenuDisplayed = false;
+    
+    this.brushRadius = 0;
    }
 
   ngOnInit(): void {
@@ -62,7 +66,6 @@ export class HomeComponent implements OnInit {
     this.colourMenuInit();
 
     console.log("Eraser button: ", this.eraserButton);
-    //this.eraserButton.style.display = "block";
 
     this.messageState = "Loading";
     this.isButtonEnabled = false;
@@ -78,57 +81,15 @@ export class HomeComponent implements OnInit {
   }
 
   //Toolbar buttons
-  selectToolButton(btnSelected: HTMLInputElement){
-    let length = this.selectableToolButtons.length;
-
-    for(let i = 0; i < length; i++){
-        //this.selectableToolButtons[i].classList.remove("selected");
-    }
-
-    //btnSelected.classList.add("selected");
-  }
-
-  showPencil(){
-    //this.pencilMenuButton.style.display = "none";
-    //this.pencilButton.style.display = "block";
-  }
-
-  showPencilMenuButton(){
-    //this.pencilMenuButton.style.display = "block";
-    //this.pencilButton.style.display = "none";
-  }
-
-  showEraser(){
-    //this.eraserButton.style.display = "block";
-    //this.bombButton.style.display = "none";
-  }
-
-  showBomb(){
-      //this.eraserButton.style.display = "none";
-      //this.bombButton.style.display = "block";
-  }
-
   sizeRangeChangeHandler(){
-    let value = Number.parseInt(this.sizeRange.value);
-
-    this.drawingCanvas.context.lineWidth = value;
-    this.drawingCanvas.brushRadius = value;
+    this.drawingCanvas.context.lineWidth = this.drawingCanvas.brushRadius;
   }
 
   pencilMenuToggle(){
-      if(this.isPencilMenuDisplayed){
-          //this.pencilMenu.style.display = "none";
-      }
-      else{
-          //this.pencilMenu.style.display = "block";
-      }
-
       this.isPencilMenuDisplayed = !(this.isPencilMenuDisplayed);
   }
 
   pencilMenuHide(){
-      //this.pencilMenu.style.display = "none";
-
       this.isPencilMenuDisplayed = false;
   }
 
@@ -142,14 +103,7 @@ export class HomeComponent implements OnInit {
       this.drawingCanvas.context.lineWidth = this.drawingCanvas.brushRadius;
 
       //Make the pencil menu appear
-      this.showPencilMenuButton();
       this.pencilMenuHide();
-      
-      //Return the eraser to default
-      this.showEraser();
-      console.log(this.drawingCanvas.toolSelected);
-
-      //this.selectToolButton(this.pencilMenuButton);
   }
 
   pencilMenuButtonClickHandler(){
@@ -157,34 +111,20 @@ export class HomeComponent implements OnInit {
   }
 
   eraserButtonClickHandler(){
-      //console.log("Eraser selected");
       this.drawingCanvas.toolSelected = DrawingCanvasComponent.drawingCanvasTools.ERASER;
 
       this.drawingCanvas.context.lineCap = "round";
       this.drawingCanvas.context.lineJoin = "round";
       this.drawingCanvas.context.lineWidth = this.drawingCanvas.eraserRadius * 2;
-
-      this.selectToolButton(this.bombButton);
-
-      this.showPencil();
-      this.showBomb();
   }
 
   bucketButtonClickHandler(){
       this.drawingCanvas.toolSelected = DrawingCanvasComponent.drawingCanvasTools.BUCKET;
-
-      this.selectToolButton(this.bucketButton);
-      this.showEraser();
-      this.showPencil();
   }
 
   bombButtonClickHandler(){
       this.drawingCanvas.clearCanvas();
       this.pencilButtonClickHandler();
-
-      this.showEraser();
-      this.showPencil();
-      this.selectToolButton(this.pencilButton);
   }
 
   //Initializes the colour button
@@ -235,36 +175,6 @@ export class HomeComponent implements OnInit {
           this.colourMenu.appendChild(buttonSvg);
       }*/
   }
-
-  colourMenuToggle(){
-      if(this.isColourMenuDisplayed){
-          this.colourMenu.style.display = "none";
-      }
-      else{
-          this.colourMenu.style.display = "block";
-      }
-
-      this.isColourMenuDisplayed = !(this.isColourMenuDisplayed);
-  }
-
-  colourMenuShow(){
-      this.isColourMenuDisplayed = true;
-      this.colourMenu.style.display = "block";
-  }
-
-  colourMenuHide(){
-      this.isColourMenuDisplayed = false;
-      this.colourMenu.style.display = "none";
-  }
-
-  btnColourClick(){
-      this.showEraser();
-      this.colourMenuToggle();
-  }
-
-  /*btnColour.addEventListener("click", function(){
-      this.btnColourClick();
-  });*/
 
   undoButtonClickHandler(){
 
