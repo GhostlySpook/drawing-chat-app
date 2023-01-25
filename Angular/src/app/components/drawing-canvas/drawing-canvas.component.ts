@@ -7,14 +7,14 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 })
 
 export class DrawingCanvasComponent implements OnInit {
-  drawingCanvasTools = {
+  static drawingCanvasTools = {
     NONE: 0,
     BRUSH: 1,
     BUCKET: 2,
     ERASER: 3
   }
 
-  hexColour = {
+  static hexColour = {
     BLACK: "#000000",
     GRAY: "#808080",
     WHITE: "#ffffff",
@@ -55,14 +55,21 @@ export class DrawingCanvasComponent implements OnInit {
   isDrawing: boolean;
   isAvailable: boolean;
 
+  redoFramesList: any;
+  redoPointer: number;
+
   constructor() { 
     this.brushRadius = 10;
     this.eraserRadius = 10;
-    this.toolSelected = this.drawingCanvasTools.BRUSH;
-    this.colourSelected = this.hexColour.BLACK;
+    this.toolSelected = DrawingCanvasComponent.drawingCanvasTools.BRUSH;
+    this.colourSelected = DrawingCanvasComponent.hexColour.BLACK;
 
     this.isDrawing = false;
     this.isAvailable = true;
+
+    //Redo values
+    this.redoFramesList = [];
+    this.redoPointer = 0;
   }
 
   ngOnInit(): void {
@@ -86,19 +93,19 @@ export class DrawingCanvasComponent implements OnInit {
 
     let pastCompositeOperation = this.context.globalCompositeOperation;
     switch(this.toolSelected){
-        case this.drawingCanvasTools.NONE:
+        case DrawingCanvasComponent.drawingCanvasTools.NONE:
             break;
-        case this.drawingCanvasTools.BRUSH:
+        case DrawingCanvasComponent.drawingCanvasTools.BRUSH:
             this.context.lineTo(px, py);
             this.context.stroke();
             break;
-        case this.drawingCanvasTools.ERASER:
+        case DrawingCanvasComponent.drawingCanvasTools.ERASER:
             this.context.lineTo(px, py);
             this.context.globalCompositeOperation = 'destination-out';
             this.context.stroke();
             this.context.globalCompositeOperation = pastCompositeOperation;
             break;
-        case this.drawingCanvasTools.BUCKET:
+        case DrawingCanvasComponent.drawingCanvasTools.BUCKET:
             this.bucketFill(px, py, this.colourSelected);
             this.isDrawing = false;
             break;
@@ -307,6 +314,22 @@ export class DrawingCanvasComponent implements OnInit {
 
   getCanvasImage(){
     return this.context.getImageData(0, 0, this.drawingCanvas.width, this.drawingCanvas.height)
+  }
+
+  addRedo(data: any){
+    //console.clear();
+        
+    let length = this.redoFramesList.length;
+
+    if((this.redoPointer + 1) == length){
+        // If it is the last, do nothing
+    }
+    else{
+        this.redoFramesList = this.redoFramesList.slice(0, this.redoPointer + 1);
+    }
+
+    this.redoFramesList.push(data);
+    this.redoPointer++;
   }
 
 }

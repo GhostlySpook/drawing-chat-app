@@ -9,23 +9,31 @@
     <button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button>
     <p>Message State: {{messageState}}</p>
 </div>
+
+<!--Toolbar-->
 <div class="toolbar center" id="divSideBar">
-    <input type="image" src="assets/img/btnBlackPencil.png" class="toolButton" id="btnBlackPencil"/>
-    <input type="image" src="assets/img/btnPencilMenu.png" class="toolButton" id="btnPencilMenu"  style="display: none"/>
+    <input (click)="pencilButtonClickHandler()" type="image" src="assets/img/btnBlackPencil.png" class="toolButton" id="pencilButton" 
+        [class.selected]="this.drawingCanvas.toolSelected == 1"
+        [style.display]="'block'"/>
+    <input (click)="pencilMenuButtonClickHandler()" type="image" src="assets/img/btnPencilMenu.png" class="toolButton" id="pencilMenuButton"  style="display: none"/>
     <div id="pencilMenu">
-        <input type="range" id="rangeSize" min="2" max="20" step="2">
+        <input (change)="sizeRangeChangeHandler()" type="range" id="sizeRange" min="2" max="20" step="2">
     </div>
 
-    <input type="image" src="assets/img/btnBlackBucket.png" class="toolButton" id="btnBlackBucket"/>
-    <input type="image" src="assets/img/btnEraser.png" class="toolButton" id="btnEraser"/>
-    <input type="image" src="assets/img/btnBomb.png" class="toolButton" id="btnBomb" style="display: none"/>
+    <input (click)="bucketButtonClickHandler()" type="image" src="assets/img/btnBlackBucket.png" class="toolButton" id="bucketButton"
+        [class.selected]="this.drawingCanvas.toolSelected == 2"
+        [style.display]="'block'"/>
+    <input (click)="eraserButtonClickHandler()" type="image" src="assets/img/btnEraser.png" class="toolButton" id="eraserButton"
+        [class.selected]="this.drawingCanvas.toolSelected == 3"
+        [style.display]="'block'"/>
+    <input (click)="bombButtonClickHandler()" type="image" src="assets/img/btnBomb.png" class="toolButton" id="bombButton" style="display: none"/>
 
     <div class="toolButton" id="btnColourContainer"></div>
     <div id="colourMenu"></div>
     
     <div id="redoContainer">
-        <input type="image" src="assets/img/btnUndo.png" class="toolButton" id="btnUndo"/>
-        <input type="image" src="assets/img/btnRedo.png" class="toolButton" id="btnRedo"/>
+        <input (click)="undoButtonClickHandler()" type="image" src="assets/img/btnUndo.png" class="toolButton" id="undoButton"/>
+        <input (click)="redoButtonClickHandler()" type="image" src="assets/img/btnRedo.png" class="toolButton" id="redoButton"/>
     </div>
 </div>
 <app-drawing-canvas #drawingCanvas class="drawingField"></app-drawing-canvas>
