@@ -57,6 +57,7 @@ export class DrawingCanvasComponent implements OnInit {
 
   redoFramesList: any = [];
   redoPointer: number;
+  redoLimit: number;
 
   constructor() { 
     this.brushRadius = 10;
@@ -70,6 +71,7 @@ export class DrawingCanvasComponent implements OnInit {
     //Redo values
     this.redoFramesList = [];
     this.redoPointer = 0;
+    this.redoLimit = 10;
   }
 
   ngOnInit(): void {

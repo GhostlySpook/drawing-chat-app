@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 })
 export class DrawingService {
   url: string;
+  static maxWidth = 1024;
+  static maxHeight = 1024;
 
   constructor(public http: HttpClient) {
     //this.url = "https://drawing-chat-test.herokuapp.com";

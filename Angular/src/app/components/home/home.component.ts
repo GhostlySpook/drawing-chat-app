@@ -66,11 +66,6 @@ export class HomeComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.btnColourContainerInit();
-    this.colourMenuInit();
-
-    console.log("Eraser button: ", this.eraserButton);
-
     this.messageState = "Loading";
     this.isButtonEnabled = false;
     this.loadImages();
@@ -152,55 +147,6 @@ export class HomeComponent implements OnInit {
 
     //Hide the menu
     //colourMenu.hide();
-  }
-
-  //Initializes the colour button
-  btnColourContainerInit(){
-      //Make the button adjust to the width
-      console.log(this.btnColourContainer);
-      /*this.btnColourContainer.setAttribute("style","height: " + this.btnColourContainer.clientWidth + "px");*/
-  }
-
-  //Fill the colour container with colours
-  colourMenuInit(){
-      /*this.colourMenu.style.display="block";
-
-      let btnWidth = (this.colourMenu.clientWidth / Object.keys(DrawingCanvasComponent.hexColour).length) - 0.1;
-      let btnHeight = this.colourMenu.clientHeight;
-
-      this.colourMenu.style.display="none";
-
-      for(let c in DrawingCanvasComponent.hexColour){
-          //Create svg to be added
-          let buttonSvg = document.createElement("svg");
-          buttonSvg.classList.add("svgBtnColour");
-
-          //Give width and height to button
-          buttonSvg.style.width = btnWidth + "px";
-          buttonSvg.style.height = btnHeight + "px";
-          
-          //Give colour
-          buttonSvg.style.background = c;
-          buttonSvg.setAttribute("colour", c);
-
-          //Assign the event for a click
-          buttonSvg.addEventListener("click", function(e){
-              //Get the colour to use now
-              let colour = e.target.colour;
-
-              //Apply the colour
-              myCanvasArea.colourSelected = colour;
-              ctx.strokeStyle = colour;
-
-              btnColourContainer.style.background = colour;
-
-              //Hide the menu
-              colourMenu.hide();
-          });
-
-          //Add the button
-          this.colourMenu.appendChild(buttonSvg);
-      }*/
   }
 
   undoButtonClickHandler(){
@@ -298,6 +244,43 @@ export class HomeComponent implements OnInit {
       this.messageState = "Sending";
 
       let imagedata = this.drawingCanvas.getCanvasImage()
+
+      let newWidth = 0;
+      let newHeight = 0;
+      let ratio = 0;
+
+      let willResize = false;
+
+      //Resize according to width if it is too big
+      if(imagedata.width > DrawingService.maxWidth && imagedata.width > imagedata.height){
+        newWidth = DrawingService.maxWidth;
+        ratio = DrawingService.maxWidth / imagedata.width;
+        newHeight = imagedata.height * ratio;
+        willResize = true;
+      }
+      else if(imagedata.height > DrawingService.maxHeight && imagedata.height > imagedata.width){
+        newHeight = DrawingService.maxHeight;
+        ratio = DrawingService.maxHeight / imagedata.height;
+        newWidth = imagedata.width * ratio;
+        willResize = true;
+      }
+      else if(imagedata.height == imagedata.width && imagedata.width > DrawingService.maxWidth){
+        newHeight = DrawingService.maxHeight;
+        newWidth = DrawingService.maxWidth;
+        willResize = true;
+      }
+
+      if(willResize){
+        console.log("Will resize: ", imagedata);
+        this.conversionCanvas.width = newWidth;
+        this.conversionCanvas.height = newHeight;
+        let conversionContext = this.conversionCanvas.getContext("2d");
+        console.log("Drawing canvas: ", this.drawingCanvas);
+
+        conversionContext.drawImage(this.drawingCanvas.drawingCanvas, 0, 0, newWidth, newHeight);
+        imagedata = conversionContext.getImageData(0, 0, this.conversionCanvas.width, this.conversionCanvas.height)
+        console.log(imagedata);
+      }      
 
       let drawingMessage: DrawingMessage = {
         data: imagedata.data,
