@@ -55,7 +55,7 @@ export class DrawingCanvasComponent implements OnInit {
   isDrawing: boolean;
   isAvailable: boolean;
 
-  redoFramesList: any;
+  redoFramesList: any = [];
   redoPointer: number;
 
   constructor() { 
@@ -86,6 +86,8 @@ export class DrawingCanvasComponent implements OnInit {
     this.context.lineCap = "round";
     this.context.lineJoin = "round";
     this.context.willReadFrequently = true;
+
+    this.clearRedo();
   }
 
   //Drawing methods
@@ -283,13 +285,22 @@ export class DrawingCanvasComponent implements OnInit {
   }
 
   finishStroke(e: Event){
-      if(!this.isAvailable){
-          return;
-      }
+    if(!this.isAvailable){
+      return;
+    }
 
-      e.preventDefault();
+    e.preventDefault();
 
-      this.isDrawing = false;
+    if(this.isDrawing){
+        switch(this.toolSelected){
+            case DrawingCanvasComponent.drawingCanvasTools.BRUSH:
+            case DrawingCanvasComponent.drawingCanvasTools.ERASER:
+                this.addRedo(this.getCanvasImage());
+                break;
+        }
+    }
+
+    this.isDrawing = false;
   }
 
   //Get the location of the touch
@@ -319,12 +330,11 @@ export class DrawingCanvasComponent implements OnInit {
   }
 
   addRedo(data: any){
-    //console.clear();
         
     let length = this.redoFramesList.length;
 
     if((this.redoPointer + 1) == length){
-        // If it is the last, do nothing
+        // If it is the last change in memory, don't erase anything in the change list
     }
     else{
         this.redoFramesList = this.redoFramesList.slice(0, this.redoPointer + 1);
@@ -332,6 +342,16 @@ export class DrawingCanvasComponent implements OnInit {
 
     this.redoFramesList.push(data);
     this.redoPointer++;
+    console.log(this.redoFramesList);
   }
 
+    clearRedo(){
+        this.redoPointer = 0;
+        this.redoFramesList = [];
+        this.redoFramesList.push(this.getCanvasImage());
+    }
+
+  getHexColours(){
+    return Object.values(DrawingCanvasComponent.hexColour);
+  }
 }

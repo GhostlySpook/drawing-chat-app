@@ -5,9 +5,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DrawingService {
+  url: string;
 
   constructor(public http: HttpClient) {
-
+    //this.url = "https://drawing-chat-test.herokuapp.com";
+    this.url = "http://localhost:3000";
   }
 
   /*sendDrawing(drawingMessage: any){
@@ -17,7 +19,7 @@ export class DrawingService {
   }*/
   sendDrawing(drawingMessage: any){
     return new Promise<any>((resolve, reject) => {
-      this.http.post("http://localhost:3000/api/drawings", {drawing: drawingMessage}).subscribe((x: any) => {
+      this.http.post(this.url + "/api/drawings", {drawing: drawingMessage}).subscribe((x: any) => {
       resolve(x);
     })
     })
@@ -26,7 +28,7 @@ export class DrawingService {
   //Returns drawings url data
   getDrawings(){
     return new Promise<any>((resolve, reject) => {
-      this.http.get("http://localhost:3000/api/drawings").subscribe((x: any) => {
+      this.http.get(this.url + "/api/drawings").subscribe((x: any) => {
       //console.log("Gotten drawings", x)
       resolve(x);
     })
@@ -37,7 +39,7 @@ export class DrawingService {
     //console.log("Before promise");
     return new Promise<any>((resolve, reject) => {
       try{
-        this.http.get("http://localhost:3000/api/drawings/pastId/" + drawingId).subscribe(
+        this.http.get(this.url + "/api/drawings/pastId/" + drawingId).subscribe(
           (x: any) => { resolve(x); },
           (error: any) => { reject(error) }
           ) 
@@ -47,7 +49,4 @@ export class DrawingService {
       }
     })
   }
-
-  /*async getDrawings(){
-  }*/
 }

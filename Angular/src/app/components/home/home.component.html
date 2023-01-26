@@ -36,14 +36,29 @@
         [style.display]="this.drawingCanvas.toolSelected == 3 ? 'block' : 'none'"/>
 
     <!--Colour button-->
-    <div class="toolButton" id="btnColourContainer"></div>
-    <div id="colourMenu"></div>
+    <div class="toolButton" #btnColourContainer (click)="showColoursButtonHandler()"
+        [style.height]="btnColourContainer.clientWidth + 'px'"
+        [style.background]="this.drawingCanvas.colourSelected"></div>
+    <!--The container where colours are found-->
+    <div #colourMenu id="colourMenu"
+        [style.display]="isColourMenuDisplayed ? 'block' : 'none' ">
+        <!--The colours to be chosen-->
+        <svg *ngFor='let colour of this.drawingCanvas.getHexColours()'
+            class="svgBtnColour"
+            (click)="colourButtonHandler(colour)"
+            [style.width]="colourButtonWidth + 'px'"
+            [style.height]="colourButtonHeight + 'px'"
+            [style.background]="colour"
+        >{{colour}}</svg>
+    </div>
     
     <!--Redo buttons-->
     <div id="redoContainer">
         <input (click)="undoButtonClickHandler()" type="image" src="assets/img/btnUndo.png" class="toolButton" id="undoButton"/>
         <input (click)="redoButtonClickHandler()" type="image" src="assets/img/btnRedo.png" class="toolButton" id="redoButton"/>
     </div>
+
+    <!--button (click)="testingFunction()">Test!</button-->
 </div>
 
 <!--Drawing canvas-->

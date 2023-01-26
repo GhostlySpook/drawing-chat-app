@@ -25,8 +25,8 @@ export class HomeComponent implements OnInit {
   @ViewChild('eraserButton', { static: true }) eraserButton!: HTMLInputElement;
   @ViewChild('bombButton', { static: true }) bombButton!: HTMLInputElement;
 
-  @ViewChild('btnColourContainer', { static: true }) btnColourContainer!: HTMLElement;
-  @ViewChild('colourMenu', { static: true }) colourMenu!: HTMLElement;
+  @ViewChild('btnColourContainer', { static: true }) btnColourContainer!: ElementRef;
+  @ViewChild('colourMenu', { static: true }) colourMenu!: ElementRef;
 
   imagesPaths: any = [];
   drawingsList: any = [];
@@ -38,6 +38,8 @@ export class HomeComponent implements OnInit {
   selectedTool: any;
   isPencilMenuDisplayed: boolean;
   isColourMenuDisplayed: boolean;
+  colourButtonWidth: number;
+  colourButtonHeight: number;
 
   brushRadius: any;
 
@@ -57,6 +59,8 @@ export class HomeComponent implements OnInit {
 
     this.isPencilMenuDisplayed = false;
     this.isColourMenuDisplayed = false;
+    this.colourButtonHeight = 0;
+    this.colourButtonWidth = 0;
     
     this.brushRadius = 0;
    }
@@ -70,6 +74,13 @@ export class HomeComponent implements OnInit {
     this.messageState = "Loading";
     this.isButtonEnabled = false;
     this.loadImages();
+
+    this.colourMenu.nativeElement.style.display="block";
+
+    this.colourButtonWidth = (this.colourMenu.nativeElement.clientWidth / Object.keys(DrawingCanvasComponent.hexColour).length) - 0.1;
+    this.colourButtonHeight = this.colourMenu.nativeElement.clientHeight;
+
+    this.colourMenu.nativeElement.style.display="none";
   }
 
   sendButtonHandler(){
@@ -125,6 +136,22 @@ export class HomeComponent implements OnInit {
   bombButtonClickHandler(){
       this.drawingCanvas.clearCanvas();
       this.pencilButtonClickHandler();
+  }
+
+  showColoursButtonHandler(){
+    this.isColourMenuDisplayed = !this.isColourMenuDisplayed;
+  }
+
+  colourButtonHandler(colour: string){
+    this.drawingCanvas.colourSelected = colour;
+    this.drawingCanvas.context.strokeStyle = colour;
+
+    this.isColourMenuDisplayed = false;
+
+    //this.btnColourContainer.nativeElement.style.background = colour;
+
+    //Hide the menu
+    //colourMenu.hide();
   }
 
   //Initializes the colour button
@@ -290,6 +317,10 @@ export class HomeComponent implements OnInit {
 
       resolve(true);
     })
+  }
+
+  testingFunction(){
+    console.log(this.drawingCanvas.getHexColours().length);
   }
 
 }
