@@ -138,7 +138,7 @@ export class HomeComponent implements OnInit {
   }
 
   bombButtonClickHandler(){
-      this.drawingCanvas.clearCanvas();
+      this.drawingCanvas.bombClear();
       this.pencilButtonClickHandler();
   }
 

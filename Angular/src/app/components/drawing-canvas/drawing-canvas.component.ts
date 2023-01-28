@@ -113,6 +113,7 @@ export class DrawingCanvasComponent implements OnInit {
             break;
         case DrawingCanvasComponent.drawingCanvasTools.BUCKET:
             this.bucketFill(px, py, this.colourSelected);
+            this.addRedo(this.getCanvasImage());
             this.isDrawing = false;
             break;
     }
@@ -222,6 +223,11 @@ export class DrawingCanvasComponent implements OnInit {
     }
     //console.log("Step seven");
     this.context.putImageData(canvasData, 0, 0);
+  }
+  
+  bombClear(){
+    this.clearCanvas();
+    this.addRedo(this.getCanvasImage());
   }
 
   clearCanvas(){
