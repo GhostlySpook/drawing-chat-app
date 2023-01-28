@@ -342,6 +342,7 @@ export class DrawingCanvasComponent implements OnInit {
         this.redoFramesList = this.redoFramesList.slice(0, this.redoPointer + 1);
     }
 
+    //Remove the first redo snapshot if it passes the limit
     if(this.redoPointer == this.redoLimit - 1){
       this.redoFramesList.shift();
     }
