@@ -4,7 +4,7 @@
             <img class="messageDrawing" src={{path}}>
         </div>
     </div>
-    <input class="textInput">
+    <!--input class="textInput"-->
     <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled">Send</button>
     <button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button>
     <p>Message State: {{messageState}}</p>
