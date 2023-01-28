@@ -342,8 +342,14 @@ export class DrawingCanvasComponent implements OnInit {
         this.redoFramesList = this.redoFramesList.slice(0, this.redoPointer + 1);
     }
 
+    if(this.redoPointer == this.redoLimit - 1){
+      this.redoFramesList.shift();
+    }
+    else{
+      this.redoPointer++;
+    }
+
     this.redoFramesList.push(data);
-    this.redoPointer++;
     //console.log(this.redoFramesList);
   }
 
