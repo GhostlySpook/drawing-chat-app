@@ -2,22 +2,23 @@ pool = require("../db.js");
 
 let drawing_list = [];
 let drawingId = 0;
-let drawing_limit = 10;
-let drawing_width_limit = 1024;
-let drawing_height_limit = 1024;
+let drawing_limit = 5;
+let drawing_width_limit = 512;
+let drawing_height_limit = 512;
 
 const Drawings = {
 
     async add(drawing){
       try{ 
-        drawing.id = drawingId++;
-
+        this.validate(drawing);
+        
         if(drawing_list.length >= drawing_limit){
           drawing_list.shift();
         }
 
+        drawing.id = drawingId++;
+
         drawing_list.push(drawing);
-        //console.log("drawings-model.js Drawing list length after adding: ", drawing_list.length)
       }catch (error) {
         return error;
       }
@@ -37,6 +38,27 @@ const Drawings = {
         return drawing_list.filter(drawing => drawing.id > lastDrawingId);
       } catch (error) {
         return error; 
+      }
+    },
+
+    validate(drawing){
+      try {
+        //Check drawing data is correct
+        if(drawing == null){
+          throw("Drawing is null");
+        }
+
+        if(typeof drawing.width != "number" || typeof drawing.height != "number" || drawing.colorSpace != "string"){
+          throw("Type of field isn't correct");
+        }
+
+        //Check the drawing received isn't too big
+        if(drawing.width > drawing_width_limit || drawing.height > drawing_height_limit){
+          throw("Drawing size is too big");
+        }
+
+      } catch (error) {
+        return error;
       }
     }
   

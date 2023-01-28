@@ -344,7 +344,7 @@ export class DrawingCanvasComponent implements OnInit {
 
     this.redoFramesList.push(data);
     this.redoPointer++;
-    console.log(this.redoFramesList);
+    //console.log(this.redoFramesList);
   }
 
     clearRedo(){

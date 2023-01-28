@@ -43,6 +43,9 @@ export class HomeComponent implements OnInit {
 
   brushRadius: any;
 
+  loadImageInterval: any;
+  milisecondsForLoading: number;
+
   constructor(private drawingService: DrawingService) {
     this.conversionCanvas = document.createElement("canvas");
     this.messageState = "Idle";
@@ -63,6 +66,8 @@ export class HomeComponent implements OnInit {
     this.colourButtonWidth = 0;
     
     this.brushRadius = 0;
+
+    this.milisecondsForLoading = 10000;
    }
 
   ngOnInit(): void {
@@ -70,12 +75,16 @@ export class HomeComponent implements OnInit {
     this.isButtonEnabled = false;
     this.loadImages();
 
+    //Resize colour button
     this.colourMenu.nativeElement.style.display="block";
 
     this.colourButtonWidth = (this.colourMenu.nativeElement.clientWidth / Object.keys(DrawingCanvasComponent.hexColour).length) - 0.1;
     this.colourButtonHeight = this.colourMenu.nativeElement.clientHeight;
 
     this.colourMenu.nativeElement.style.display="none";
+
+    //Add an interval to load images every now and then
+    setInterval(() => this.loadImages(), this.milisecondsForLoading);
   }
 
   sendButtonHandler(){

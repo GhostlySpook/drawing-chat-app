@@ -6,19 +6,14 @@ import { Injectable } from '@angular/core';
 })
 export class DrawingService {
   url: string;
-  static maxWidth = 1024;
-  static maxHeight = 1024;
+  static maxWidth = 512;
+  static maxHeight = 512;
 
   constructor(public http: HttpClient) {
     //this.url = "https://drawing-chat-test.herokuapp.com";
     this.url = "http://localhost:3000";
   }
 
-  /*sendDrawing(drawingMessage: any){
-    this.http.post("http://localhost:3000/api/drawings", {drawing: drawingMessage}).subscribe( x => 
-      console.log(x)
-    );
-  }*/
   sendDrawing(drawingMessage: any){
     return new Promise<any>((resolve, reject) => {
       this.http.post(this.url + "/api/drawings", {drawing: drawingMessage}).subscribe((x: any) => {
