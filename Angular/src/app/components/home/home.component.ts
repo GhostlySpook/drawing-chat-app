@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
     
     this.brushRadius = 0;
 
-    this.milisecondsForLoading = 10000;
+    this.milisecondsForLoading = 15000;
    }
 
   ngOnInit(): void {
@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit {
     this.colourMenu.nativeElement.style.display="none";
 
     //Add an interval to load images every now and then
-    setInterval(() => this.loadImages(), this.milisecondsForLoading);
+    this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
   }
 
   sendButtonHandler(){
@@ -188,6 +188,10 @@ export class HomeComponent implements OnInit {
 
   loadImages(){ 
     return new Promise<any>((resolve, reject) => {
+      console.log("Start loading- Removing interval: ", this.loadImageInterval);
+      clearInterval(this.loadImageInterval);
+      console.log("Interval removed: ", this.loadImageInterval);
+
       this.messageState = "Loading";
       this.isButtonEnabled = false;
       let lastDrawingNo;
@@ -237,11 +241,14 @@ export class HomeComponent implements OnInit {
 
         this.messageState = "Idle";
         this.isButtonEnabled = true;
+        console.log("Loaded images in promise!");
       }).catch((reason) => {
         console.error("Error retrieving drawings:", reason);
         reject("Rejected Drawing Past Id Promise");
         this.messageState = "Connection Error";
       })
+      this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
+      console.log("Created interval")
       resolve(true);
     })
   }
