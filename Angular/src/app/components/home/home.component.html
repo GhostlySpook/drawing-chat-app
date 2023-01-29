@@ -1,10 +1,11 @@
 <div class="chat">
     <div #chatContainer class="chatContainer">
-        <div class="drawingContainer" *ngFor='let path of imagesPaths'>
-            <img class="messageDrawing" src={{path}}>
+        <div class="drawingContainer" *ngFor='let message of messageList'>
+            <p>{{message.text}}</p>
+            <img class="messageDrawing" src={{message.path}}>
         </div>
     </div>
-    <!--input class="textInput"-->
+    <input [(ngModel)]="textMessageInput" class="textInput">
     <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled">Send</button>
     <button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button>
     <p>Message State: {{messageState}}</p>

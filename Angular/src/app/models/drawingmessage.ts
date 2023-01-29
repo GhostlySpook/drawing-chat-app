@@ -3,5 +3,6 @@ export type DrawingMessage = {
     width: number,
     height: number,
     colorSpace: string,
+    textMessage: string,
     id?: number
 }

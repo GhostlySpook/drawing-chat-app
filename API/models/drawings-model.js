@@ -5,6 +5,7 @@ let drawingId = 0;
 let drawing_limit = 5;
 let drawing_width_limit = 512;
 let drawing_height_limit = 512;
+let message_length_limit = 128;
 
 const Drawings = {
 
@@ -48,13 +49,18 @@ const Drawings = {
           throw("Drawing is null");
         }
 
-        if(typeof drawing.width != "number" || typeof drawing.height != "number" || drawing.colorSpace != "string"){
+        if(typeof drawing.width != "number" || typeof drawing.height != "number" || drawing.colorSpace != "string" || drawing.text_message != "string"){
           throw("Type of field isn't correct");
         }
 
         //Check the drawing received isn't too big
         if(drawing.width > drawing_width_limit || drawing.height > drawing_height_limit){
           throw("Drawing size is too big");
+        }
+
+        //Check text message isn't too big
+        if(drawing.textMessage > message_length_limit){
+          throw("Text message is too long");
         }
 
       } catch (error) {

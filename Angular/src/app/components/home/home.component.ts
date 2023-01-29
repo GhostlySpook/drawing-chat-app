@@ -28,7 +28,10 @@ export class HomeComponent implements OnInit {
   @ViewChild('btnColourContainer', { static: true }) btnColourContainer!: ElementRef;
   @ViewChild('colourMenu', { static: true }) colourMenu!: ElementRef;
 
-  imagesPaths: any = [];
+  textMessageInput: string;
+
+  //imagesPaths: any = [];
+  messageList: any = [];
   drawingsList: any = [];
   conversionCanvas: any;
   messageState: string;
@@ -47,6 +50,8 @@ export class HomeComponent implements OnInit {
   milisecondsForLoading: number;
 
   constructor(private drawingService: DrawingService) {
+    this.textMessageInput = "";
+
     this.conversionCanvas = document.createElement("canvas");
     this.messageState = "Idle";
     this.isButtonEnabled = false;
@@ -211,20 +216,24 @@ export class HomeComponent implements OnInit {
         lastDrawingNo = -1;
       }
 
+      //Take drawing messages from the server
       this.drawingService.getDrawingsPastId(lastDrawingNo).then((x) => {
 
+        //Add them to a temp list
         for(let item of x){
           this.drawingsList.push(item);
         }
 
         let newDrawings = x;
 
+        //Create a new image after taking the data of each received drawing
         for(let item of newDrawings){
           let img = new Image();
 
           let total = item.width * item.height * 4;
           let u8 = new Uint8ClampedArray(total);
 
+          //Take bits of drawings and create a new imagedata object from the 8-bit array
           for(let i = 0; i < total; i++){
             u8[i] = item.data[i];
           }
@@ -235,8 +244,11 @@ export class HomeComponent implements OnInit {
           let conversionContext = this.conversionCanvas.getContext("2d");
 
 
+          //Create an image inside a canvas using the new ImageData and add it to the imagesPaths variable to display them
           conversionContext.putImageData(idata, 0, 0);
-          this.imagesPaths.push(this.conversionCanvas.toDataURL("image/png"));
+
+          this.messageList.push({path: this.conversionCanvas.toDataURL("image/png"), text: item.textMessage});
+          //this.imagesPaths.push(this.conversionCanvas.toDataURL("image/png"));
         }
 
         this.messageState = "Idle";
@@ -302,7 +314,8 @@ export class HomeComponent implements OnInit {
         data: imagedata.data,
         width: imagedata.width,
         height: imagedata.height,
-        colorSpace: imagedata.colorSpace
+        colorSpace: imagedata.colorSpace,
+        textMessage: this.textMessageInput
       }
 
       this.drawingService.sendDrawing(drawingMessage).then((x) => {
