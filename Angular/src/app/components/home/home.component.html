@@ -14,9 +14,9 @@
 <!--Toolbar-->
 <div class="toolbar center" id="divSideBar">
     <!--Pencil button-->
-    <input (click)="pencilButtonClickHandler()" type="image" src="assets/img/btnBlackPencil.png" class="toolButton" id="pencilButton" 
+    <input #pencilButton (click)="pencilButtonClickHandler()" type="image" src="assets/img/btnBlackPencil.png" class="toolButton" id="pencilButton" 
         [style.display]="this.drawingCanvas.toolSelected == 1 ? 'none' : 'block'"/>
-    <input (click)="pencilMenuButtonClickHandler()" type="image" src="assets/img/btnPencilMenu.png" class="toolButton" id="pencilMenuButton"
+    <input #pencilMenuButton (click)="pencilMenuButtonClickHandler()" type="image" src="assets/img/btnPencilMenu.png" class="toolButton" id="pencilMenuButton"
         [class.selected]="this.drawingCanvas.toolSelected == 1"
         [style.display]="this.drawingCanvas.toolSelected == 1 ? 'block' : 'none'"/>
     <div id="pencilMenu"
@@ -30,9 +30,9 @@
         [style.display]="'block'"/>
 
     <!--Eraser button-->
-    <input (click)="eraserButtonClickHandler()" type="image" src="assets/img/btnEraser.png" class="toolButton" id="eraserButton"
+    <input #eraserButton (click)="eraserButtonClickHandler()" type="image" src="assets/img/btnEraser.png" class="toolButton" id="eraserButton"
         [style.display]="this.drawingCanvas.toolSelected == 3 ? 'none' : 'block'"/>
-    <input (click)="bombButtonClickHandler()" type="image" src="assets/img/btnBomb.png" class="toolButton" id="bombButton" style="display: none"
+    <input #bombButton (click)="bombButtonClickHandler()" type="image" src="assets/img/btnBomb.png" class="toolButton" id="bombButton" style="display: none"
         [class.selected]="this.drawingCanvas.toolSelected == 3"
         [style.display]="this.drawingCanvas.toolSelected == 3 ? 'block' : 'none'"/>
 

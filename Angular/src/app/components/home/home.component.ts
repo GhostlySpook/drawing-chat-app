@@ -16,14 +16,14 @@ export class HomeComponent implements OnInit {
   @ViewChild('chatContainer') chatContainer!: ElementRef;
 
   //Toolbar buttons
-  @ViewChild('pencilButton', { static: true }) pencilButton!: HTMLInputElement;
-  @ViewChild('pencilMenuButton', { static: true }) pencilMenuButton!: HTMLInputElement;
+  @ViewChild('pencilButton', { static: true }) pencilButton!: ElementRef;
+  @ViewChild('pencilMenuButton', { static: true }) pencilMenuButton!: ElementRef;
   @ViewChild('sizeRange', { static: true }) sizeRange!: HTMLInputElement;
   @ViewChild('pencilMenu', { static: true }) pencilMenu!: HTMLElement;
 
   @ViewChild('bucketButton', { static: true }) bucketButton!: HTMLInputElement;
-  @ViewChild('eraserButton', { static: true }) eraserButton!: HTMLInputElement;
-  @ViewChild('bombButton', { static: true }) bombButton!: HTMLInputElement;
+  @ViewChild('eraserButton', { static: true }) eraserButton!: ElementRef;
+  @ViewChild('bombButton', { static: true }) bombButton!: ElementRef;
 
   @ViewChild('btnColourContainer', { static: true }) btnColourContainer!: ElementRef;
   @ViewChild('colourMenu', { static: true }) colourMenu!: ElementRef;
@@ -90,6 +90,9 @@ export class HomeComponent implements OnInit {
 
     //Add an interval to load images every now and then
     this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
+
+    //Add shortcuts
+    document.addEventListener("keydown", (e) => this.shortcutFunction(e));
   }
 
   sendButtonHandler(){
@@ -330,6 +333,52 @@ export class HomeComponent implements OnInit {
 
       resolve(true);
     })
+  }
+
+  //Shortcuts with your keyboard!
+  shortcutFunction(e: KeyboardEvent){
+    switch(e.key){
+        case "b":
+        case "B":
+            if(this.pencilButton.nativeElement.style.display == "block"){
+              this.pencilButtonClickHandler();
+            }
+            else if(this.pencilMenuButton.nativeElement.style.display == "block"){
+              this.pencilMenuButtonClickHandler();
+            }
+            break;
+        case "c":
+        case "C":
+            this.showColoursButtonHandler();
+            break;
+        case "f":
+        case "F":
+            this.bucketButtonClickHandler();
+            break;
+        case "e":
+        case "E":
+            if(this.eraserButton.nativeElement.style.display == "block"){
+                //console.log("Erase");
+                this.eraserButtonClickHandler();
+            }
+            else if(this.bombButton.nativeElement.style.display == "block"){
+                //console.log("Bomb");
+                this.bombButtonClickHandler();
+            }
+            break;
+        case "z":
+        case "Z":
+            if(e.ctrlKey){
+                this.undoButtonClickHandler();
+            }
+            break;
+        case "y":
+        case "Y":
+            if(e.ctrlKey){
+                this.redoButtonClickHandler();
+            }
+            break;
+    }
   }
 
   testingFunction(){
