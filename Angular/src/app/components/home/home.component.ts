@@ -322,6 +322,7 @@ export class HomeComponent implements OnInit {
 
         this.loadImages().then((value) => {
           this.messageState = "Idle";
+          this.textMessageInput = "";
         }).catch((reason) => {
           console.error("Error loading drawings:", reason);
         });
