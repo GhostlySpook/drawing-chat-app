@@ -5,7 +5,7 @@
             <img class="messageDrawing" src={{message.path}}>
         </div>
     </div>
-    <input [(ngModel)]="textMessageInput" class="textInput">
+    <input #textInput [(ngModel)]="textMessageInput" class="textInput">
     <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled">Send</button>
     <button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button>
     <p>Message State: {{messageState}}</p>

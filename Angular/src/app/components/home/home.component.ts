@@ -11,6 +11,7 @@ import { DrawingService } from 'src/app/services/drawing.service';
 export class HomeComponent implements OnInit {
 
   @ViewChild('drawingCanvas', { static: true }) drawingCanvas!: DrawingCanvasComponent;
+  @ViewChild('textInput', { static: true }) textInput!: ElementRef;
   @ViewChild('sendButton', { static: true }) sendButton!: HTMLButtonElement;
   @ViewChild('loadButton', { static: true }) loadButton!: HTMLButtonElement;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
@@ -337,6 +338,14 @@ export class HomeComponent implements OnInit {
 
   //Shortcuts with your keyboard!
   shortcutFunction(e: KeyboardEvent){
+    //Don't use shortcuts while in chat
+    console.log("Active element:", document.activeElement);
+    console.log("Text input:", this.textInput);
+
+    if(document.activeElement == this.textInput.nativeElement){
+      return;
+    }
+
     switch(e.key){
         case "b":
         case "B":

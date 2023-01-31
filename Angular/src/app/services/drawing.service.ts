@@ -10,8 +10,8 @@ export class DrawingService {
   static maxHeight = 512;
 
   constructor(public http: HttpClient) {
-    //this.url = "https://drawing-chat-test.herokuapp.com";
-    this.url = "http://localhost:3000";
+    this.url = "https://drawing-chat-test.herokuapp.com";
+    //this.url = "http://localhost:3000";
   }
 
   sendDrawing(drawingMessage: any){
