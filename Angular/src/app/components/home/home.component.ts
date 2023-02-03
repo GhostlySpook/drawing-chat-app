@@ -19,8 +19,8 @@ export class HomeComponent implements OnInit {
   //Toolbar buttons
   @ViewChild('pencilButton', { static: true }) pencilButton!: ElementRef;
   @ViewChild('pencilMenuButton', { static: true }) pencilMenuButton!: ElementRef;
-  @ViewChild('sizeRange', { static: true }) sizeRange!: HTMLInputElement;
-  @ViewChild('pencilMenu', { static: true }) pencilMenu!: HTMLElement;
+  @ViewChild('sizeRange', { static: true }) sizeRange!: ElementRef;
+  @ViewChild('pencilMenu', { static: true }) pencilMenu!: ElementRef;
 
   @ViewChild('bucketButton', { static: true }) bucketButton!: HTMLInputElement;
   @ViewChild('eraserButton', { static: true }) eraserButton!: ElementRef;
@@ -94,6 +94,8 @@ export class HomeComponent implements OnInit {
 
     //Add shortcuts
     document.addEventListener("keydown", (e) => this.shortcutFunction(e));
+
+    window.addEventListener("pointerdown", (e) => this.pressingWindowFunction(e));
   }
 
   sendButtonHandler(){
@@ -197,9 +199,9 @@ export class HomeComponent implements OnInit {
 
   loadImages(){ 
     return new Promise<any>((resolve, reject) => {
-      console.log("Start loading- Removing interval: ", this.loadImageInterval);
+      //console.log("Start loading- Removing interval: ", this.loadImageInterval);
       clearInterval(this.loadImageInterval);
-      console.log("Interval removed: ", this.loadImageInterval);
+      //console.log("Interval removed: ", this.loadImageInterval);
 
       this.messageState = "Loading";
       this.isButtonEnabled = false;
@@ -257,14 +259,14 @@ export class HomeComponent implements OnInit {
 
         this.messageState = "Idle";
         this.isButtonEnabled = true;
-        console.log("Loaded images in promise!");
+        //console.log("Loaded images in promise!");
       }).catch((reason) => {
         console.error("Error retrieving drawings:", reason);
         reject("Rejected Drawing Past Id Promise");
         this.messageState = "Connection Error";
       })
       this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
-      console.log("Created interval")
+      //console.log("Created interval")
       resolve(true);
     })
   }
@@ -303,15 +305,15 @@ export class HomeComponent implements OnInit {
       }
 
       if(willResize){
-        console.log("Will resize: ", imagedata);
+        //console.log("Will resize: ", imagedata);
         this.conversionCanvas.width = newWidth;
         this.conversionCanvas.height = newHeight;
         let conversionContext = this.conversionCanvas.getContext("2d");
-        console.log("Drawing canvas: ", this.drawingCanvas);
+        //console.log("Drawing canvas: ", this.drawingCanvas);
 
         conversionContext.drawImage(this.drawingCanvas.drawingCanvas, 0, 0, newWidth, newHeight);
         imagedata = conversionContext.getImageData(0, 0, this.conversionCanvas.width, this.conversionCanvas.height)
-        console.log(imagedata);
+        //console.log(imagedata);
       }      
 
       let drawingMessage: DrawingMessage = {
@@ -339,8 +341,8 @@ export class HomeComponent implements OnInit {
   //Shortcuts with your keyboard!
   shortcutFunction(e: KeyboardEvent){
     //Don't use shortcuts while in chat
-    console.log("Active element:", document.activeElement);
-    console.log("Text input:", this.textInput);
+    //console.log("Active element:", document.activeElement);
+    //console.log("Text input:", this.textInput);
 
     if(document.activeElement == this.textInput.nativeElement){
       return;
@@ -389,6 +391,19 @@ export class HomeComponent implements OnInit {
             break;
     }
   }
+
+  pressingWindowFunction(e: Event){
+    //If pencil menu is displayed, hide
+    if(e.target != this.pencilButton.nativeElement && e.target != this.pencilMenu.nativeElement && e.target != this.sizeRange.nativeElement){
+        console.log("Should hide");
+        this.isPencilMenuDisplayed = false;
+    }
+
+    //If colour menu is displayed, hide
+    if(!((e.target as Element).classList.contains("svgBtnColour"))){
+        this.isColourMenuDisplayed = false;
+    }
+}
 
   testingFunction(){
     console.log(this.drawingCanvas.getHexColours().length);

@@ -360,11 +360,11 @@ export class DrawingCanvasComponent implements OnInit {
     //console.log(this.redoFramesList);
   }
 
-    clearRedo(){
-        this.redoPointer = 0;
-        this.redoFramesList = [];
-        this.redoFramesList.push(this.getCanvasImage());
-    }
+  clearRedo(){
+      this.redoPointer = 0;
+      this.redoFramesList = [];
+      this.redoFramesList.push(this.getCanvasImage());
+  }
 
   getHexColours(){
     return Object.values(DrawingCanvasComponent.hexColour);
