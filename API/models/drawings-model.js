@@ -1,25 +1,36 @@
 pool = require("../db.js");
 
-let drawing_list = [];
-let drawingId = 0;
-let drawing_limit = 5;
+let message_list = [];
+let messageId = 0;
+let message_limit = 5;
 let drawing_width_limit = 512;
 let drawing_height_limit = 512;
 let message_length_limit = 128;
 
 const Drawings = {
 
-    async add(drawing){
+    async add(message){
       try{ 
-        this.validate(drawing);
-        
-        if(drawing_list.length >= drawing_limit){
-          drawing_list.shift();
+        //console.log("Received message:");
+        //console.log(message);
+
+        if(message_list.length >= message_limit){
+          message_list.shift();
         }
 
-        drawing.id = drawingId++;
+        message.id = messageId++;
 
-        drawing_list.push(drawing);
+        message_list.push(message);
+
+        /*this.validate(drawing);
+        
+        if(message_list.length >= message_limit){
+          message_list.shift();
+        }
+
+        drawing.id = messageId++;
+
+        message_list.push(drawing);*/
       }catch (error) {
         return error;
       }
@@ -27,39 +38,39 @@ const Drawings = {
 
     async getAll(){
       try{
-        //console.log("drawings-model.js Drawing list length while getting all: ", drawing_list.length)
-        return drawing_list;
+        //console.log("drawings-model.js Drawing list length while getting all: ", message_list.length)
+        return message_list;
       } catch (error){
         return error;
       }
     },
 
-    async getPastId(lastDrawingId){
+    async getPastId(lastMessageId){
       try {
-        return drawing_list.filter(drawing => drawing.id > lastDrawingId);
+        return message_list.filter(message => message.id > lastMessageId);
       } catch (error) {
         return error; 
       }
     },
 
-    validate(drawing){
+    validate(message){
       try {
         //Check drawing data is correct
-        if(drawing == null){
+        if(message == null){
           throw("Drawing is null");
         }
 
-        if(typeof drawing.width != "number" || typeof drawing.height != "number" || drawing.colorSpace != "string" || drawing.text_message != "string"){
+        if(typeof message.width != "number" || typeof message.height != "number" || message.colorSpace != "string" || message.text_message != "string"){
           throw("Type of field isn't correct");
         }
 
         //Check the drawing received isn't too big
-        if(drawing.width > drawing_width_limit || drawing.height > drawing_height_limit){
+        if(message.width > drawing_width_limit || message.height > drawing_height_limit){
           throw("Drawing size is too big");
         }
 
         //Check text message isn't too big
-        if(drawing.textMessage > message_length_limit){
+        if(message.textMessage > message_length_limit){
           throw("Text message is too long");
         }
 

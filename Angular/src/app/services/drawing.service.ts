@@ -10,13 +10,14 @@ export class DrawingService {
   static maxHeight = 512;
 
   constructor(public http: HttpClient) {
-    this.url = "https://drawing-chat-test.herokuapp.com";
-    //this.url = "http://localhost:3000";
+    //this.url = "https://drawing-chat-test.herokuapp.com";
+    this.url = "http://localhost:3000";
   }
 
   sendDrawing(drawingMessage: any){
     return new Promise<any>((resolve, reject) => {
-      this.http.post(this.url + "/api/drawings", {drawing: drawingMessage}).subscribe((x: any) => {
+      //this.http.post(this.url + "/api/drawings", {drawing: drawingMessage}).subscribe((x: any) => {
+      this.http.post(this.url + "/api/drawings", {message: drawingMessage}).subscribe((x: any) => {
       resolve(x);
     })
     })
@@ -33,7 +34,7 @@ export class DrawingService {
   }
 
   getDrawingsPastId(drawingId: number){
-    //console.log("Before promise");
+    console.log("Before promise");
     return new Promise<any>((resolve, reject) => {
       try{
         this.http.get(this.url + "/api/drawings/pastId/" + drawingId).subscribe(

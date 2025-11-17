@@ -2,12 +2,18 @@
     <div #chatContainer class="chatContainer">
         <div class="drawingContainer" *ngFor='let message of messageList'>
             <p>{{message.text}}</p>
-            <img class="messageDrawing" src={{message.path}}>
+            <div *ngIf="message.path != null">
+                <img class="messageDrawing" src={{message.path}}>
+            </div>
+            <hr class="dashed">
         </div>
     </div>
     <input #textInput [(ngModel)]="textMessageInput" class="textInput">
     <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled">Send</button>
     <button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button>
+    <button #sendDrawingButton (click)="sendDrawingButtonHandler()" [disabled]="!isButtonEnabled">Send Drawing</button>
+    <!--button (click)="testingFunction()">Test!</button>
+    <button (click)="testingLoadFunction()">Test Load</button-->
     <p>Message State: {{messageState}}</p>
 </div>
 
@@ -58,8 +64,6 @@
         <input (click)="undoButtonClickHandler()" type="image" src="assets/img/btnUndo.png" class="toolButton" id="undoButton"/>
         <input (click)="redoButtonClickHandler()" type="image" src="assets/img/btnRedo.png" class="toolButton" id="redoButton"/>
     </div>
-
-    <!--button (click)="testingFunction()">Test!</button-->
 </div>
 
 <!--Drawing canvas-->

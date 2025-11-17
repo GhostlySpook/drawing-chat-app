@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DrawingCanvasComponent } from '../drawing-canvas/drawing-canvas.component';
 import { DrawingMessage } from 'src/app/models/drawingmessage';
 import { DrawingService } from 'src/app/services/drawing.service';
+import { last } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -79,7 +80,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.messageState = "Loading";
     this.isButtonEnabled = false;
-    this.loadImages();
+    this.loadMessages();
 
     //Resize colour button
     this.colourMenu.nativeElement.style.display="block";
@@ -90,7 +91,7 @@ export class HomeComponent implements OnInit {
     this.colourMenu.nativeElement.style.display="none";
 
     //Add an interval to load images every now and then
-    this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
+    this.loadImageInterval = setInterval(() => this.loadMessages(), this.milisecondsForLoading);
 
     //Add shortcuts
     document.addEventListener("keydown", (e) => this.shortcutFunction(e));
@@ -99,11 +100,15 @@ export class HomeComponent implements OnInit {
   }
 
   sendButtonHandler(){
+    this.sendMessage();
+  }
+
+  sendDrawingButtonHandler(){
     this.sendImage();
   }
 
   loadButtonHandler(){
-    this.loadImages();
+    this.loadMessages();
   }
 
   //Toolbar buttons
@@ -197,6 +202,89 @@ export class HomeComponent implements OnInit {
       return true;
   }
 
+  loadMessages(){ 
+    return new Promise<any>((resolve, reject) => {
+      //console.log("Start loading- Removing interval: ", this.loadImageInterval);
+      clearInterval(this.loadImageInterval);
+      //console.log("Interval removed: ", this.loadImageInterval);
+
+      this.messageState = "Loading";
+      this.isButtonEnabled = false;
+      let lastDrawingNo;
+
+      if(this.drawingsList.length > 0){
+        //Get the biggest Id number
+        lastDrawingNo = this.drawingsList.reduce((accumulator: number, currentValue: any) => {
+          if(accumulator < currentValue.id){
+            return currentValue.id;
+          }
+          else{
+            return accumulator;
+          }
+        }, /*Initial value*/ -1);
+      }
+      else{
+        lastDrawingNo = -1;
+      }
+
+      console.log(lastDrawingNo)
+
+      //Take drawing messages from the server
+      this.drawingService.getDrawingsPastId(lastDrawingNo).then((x) => {
+
+        console.log(x)
+
+        //Add them to a temp list
+        for(let item of x){
+          this.drawingsList.push(item);
+        }        
+
+        let newDrawings = x;
+
+        //Create a new image after taking the data of each received drawing
+        for(let item of newDrawings){
+          if(item.data != null){
+            let img = new Image();
+
+            let total = item.width * item.height * 4;
+            let u8 = new Uint8ClampedArray(total);
+
+            //Take bits of drawings and create a new imagedata object from the 8-bit array
+            for(let i = 0; i < total; i++){
+              u8[i] = item.data[i];
+            }
+
+            let idata = new ImageData(u8, item.width, item.height, { colorSpace: item.colorSpace })
+            this.conversionCanvas.width = item.width;
+            this.conversionCanvas.height = item.height;
+            let conversionContext = this.conversionCanvas.getContext("2d");
+
+
+            //Create an image inside a canvas using the new ImageData and add it to the imagesPaths variable to display them
+            conversionContext.putImageData(idata, 0, 0);
+            //this.imagesPaths.push(this.conversionCanvas.toDataURL("image/png"));
+            this.messageList.push({path: this.conversionCanvas.toDataURL("image/png"), text: item.textMessage});
+          }
+          else{
+            this.messageList.push({path: null, text: item.textMessage});
+          }
+        }
+
+        this.messageState = "Idle";
+        this.isButtonEnabled = true;
+        //console.log("Loaded images in promise!");
+        console.log("Messages to load in chat:", this.messageList);
+      }).catch((reason) => {
+        console.error("Error retrieving drawings:", reason);
+        reject("Rejected Drawing Past Id Promise");
+        this.messageState = "Connection Error";
+      })
+      this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
+      //console.log("Created interval")
+      resolve(true);
+    })
+  }
+
   loadImages(){ 
     return new Promise<any>((resolve, reject) => {
       //console.log("Start loading- Removing interval: ", this.loadImageInterval);
@@ -267,6 +355,37 @@ export class HomeComponent implements OnInit {
       })
       this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
       //console.log("Created interval")
+      resolve(true);
+    })
+  }
+
+  sendMessage(){
+    return new Promise<any>((resolve, reject) => {
+      clearInterval(this.loadImageInterval);
+
+      this.isButtonEnabled = false;
+      this.messageState = "Sending";
+
+      let drawingMessage: DrawingMessage = {
+        data: null,
+        width: null,
+        height: null,
+        colorSpace: null,
+        textMessage: this.textMessageInput
+      }
+
+      this.drawingService.sendDrawing(drawingMessage).then((x) => {
+
+        this.loadMessages().then((value) => {
+          this.messageState = "Idle";
+          this.textMessageInput = "";
+        }).catch((reason) => {
+          console.error("Error loading drawings:", reason);
+        });
+      });
+
+      this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
+
       resolve(true);
     })
   }
@@ -406,7 +525,15 @@ export class HomeComponent implements OnInit {
 }
 
   testingFunction(){
-    console.log(this.drawingCanvas.getHexColours().length);
+    //Take image data
+    let image_data = this.drawingCanvas.drawingCanvas.toDataURL("image/png");
+
+    //Send to server
+    this.drawingService.sendDrawing(image_data);
+  }
+
+  testingLoadFunction(){
+    
   }
 
 }
