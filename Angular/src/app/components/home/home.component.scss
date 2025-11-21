@@ -75,12 +75,23 @@ body {
     background-color: white;
 }
 
-.drawingField{
-    width: 70%;
+.canvasContainer{
+    //width: 1200px;
+    width: 65%;
     height: 100vh;
     display: block;
     float: right;
-    overflow: hidden
+    background-color: gainsboro;
+    text-align: center;
+    overflow: scroll;
+}
+
+.drawingField{
+    width: 1100px;
+    height: 700px;
+    margin:auto;
+    margin-top: 5px;
+    display: block;
 }
 
 .canvas{

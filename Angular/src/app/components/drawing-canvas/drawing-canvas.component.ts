@@ -75,11 +75,11 @@ export class DrawingCanvasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.drawingCanvas = <HTMLCanvasElement> document.getElementById("drawingCanvas")
+    this.drawingCanvas = <HTMLCanvasElement> document.getElementById("drawingCanvas");
     this.context = this.drawingCanvas.getContext("2d");
 
-    this.drawingCanvas.width = window.innerWidth * 0.70;
-    this.drawingCanvas.height = window.innerHeight;
+    this.drawingCanvas.width = 1100//window.innerWidth * 0.65;
+    this.drawingCanvas.height = 700//window.innerHeight;
   }
 
   ngAfterViewInit() {
