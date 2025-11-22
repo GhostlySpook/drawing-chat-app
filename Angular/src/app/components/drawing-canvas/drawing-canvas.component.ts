@@ -79,7 +79,7 @@ export class DrawingCanvasComponent implements OnInit {
     this.context = this.drawingCanvas.getContext("2d");
 
     this.drawingCanvas.width = 1100//window.innerWidth * 0.65;
-    this.drawingCanvas.height = 700//window.innerHeight;
+    this.drawingCanvas.height = 800//window.innerHeight;
   }
 
   ngAfterViewInit() {
@@ -89,6 +89,7 @@ export class DrawingCanvasComponent implements OnInit {
     this.context.lineJoin = "round";
     this.context.willReadFrequently = true;
 
+    this.clearCanvas();
     this.clearRedo();
   }
 
@@ -232,6 +233,7 @@ export class DrawingCanvasComponent implements OnInit {
 
   clearCanvas(){
     this.context.clearRect(0, 0, this.drawingCanvas.width, this.drawingCanvas.height);
+    this.bucketFill(0, 0, DrawingCanvasComponent.hexColour.WHITE);
   }
 
   //Events handling

@@ -11,7 +11,7 @@
     <input #textInput [(ngModel)]="textMessageInput" class="textInput">
     <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled">Send</button>
     <button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button>
-    <button #sendDrawingButton (click)="sendDrawingButtonHandler()" [disabled]="!isButtonEnabled">Send Drawing</button>
+    <!--button #sendDrawingButton (click)="sendDrawingButtonHandler()" [disabled]="!isButtonEnabled">Send Drawing</button-->
     <!--button (click)="testingFunction()">Test!</button>
     <button (click)="testingLoadFunction()">Test Load</button-->
     <p>Message State: {{messageState}}</p>
@@ -69,4 +69,8 @@
 <!--Drawing canvas-->
 <div class='canvasContainer'>
     <app-drawing-canvas #drawingCanvas class="drawingField"></app-drawing-canvas>
+    <div class="buttonContainer">
+        <button (click)="saveDrawingButtonHandler()" class="saveButton">Save</button>
+        <button (click)="sendDrawingButtonHandler()" class="publishButton" [disabled]="!isButtonEnabled">Publish</button>
+    </div>
 </div>

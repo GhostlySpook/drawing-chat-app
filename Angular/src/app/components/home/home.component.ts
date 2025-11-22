@@ -111,6 +111,28 @@ export class HomeComponent implements OnInit {
     this.loadMessages();
   }
 
+  saveDrawingButtonHandler(){
+    console.log("Saving...")
+
+    console.log(this.drawingCanvas.context)
+
+    let canvasUrl = this.drawingCanvas.drawingCanvas.toDataURL("image/jpeg");
+    const createEl = document.createElement('a');
+    createEl.href = canvasUrl;
+
+    // This is the name of our downloaded file
+    createEl.download = "drawing";
+
+    // Click the download button, causing a download, and then remove it
+    createEl.click();
+    createEl.remove();
+  }
+
+  scrollChatContainerDown(){
+    this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    console.log("Should scroll down");
+  }
+
   //Toolbar buttons
   sizeRangeChangeHandler(){
     this.drawingCanvas.context.lineWidth = this.drawingCanvas.brushRadius;
@@ -274,12 +296,14 @@ export class HomeComponent implements OnInit {
         this.isButtonEnabled = true;
         //console.log("Loaded images in promise!");
         console.log("Messages to load in chat:", this.messageList);
+
       }).catch((reason) => {
         console.error("Error retrieving drawings:", reason);
         reject("Rejected Drawing Past Id Promise");
         this.messageState = "Connection Error";
-      })
-      this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
+      });
+
+      this.loadImageInterval = setInterval(() => this.loadMessages(), this.milisecondsForLoading);
       //console.log("Created interval")
       resolve(true);
     })
@@ -352,8 +376,9 @@ export class HomeComponent implements OnInit {
         console.error("Error retrieving drawings:", reason);
         reject("Rejected Drawing Past Id Promise");
         this.messageState = "Connection Error";
-      })
-      this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
+      });
+
+      this.loadImageInterval = setInterval(() => this.loadMessages(), this.milisecondsForLoading);
       //console.log("Created interval")
       resolve(true);
     })
@@ -384,7 +409,7 @@ export class HomeComponent implements OnInit {
         });
       });
 
-      this.loadImageInterval = setInterval(() => this.loadImages(), this.milisecondsForLoading);
+      this.loadImageInterval = setInterval(() => this.loadMessages(), this.milisecondsForLoading);
 
       resolve(true);
     })
@@ -445,7 +470,7 @@ export class HomeComponent implements OnInit {
 
       this.drawingService.sendDrawing(drawingMessage).then((x) => {
 
-        this.loadImages().then((value) => {
+        this.loadMessages().then((value) => {
           this.messageState = "Idle";
           this.textMessageInput = "";
         }).catch((reason) => {
