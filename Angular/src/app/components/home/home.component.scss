@@ -5,7 +5,7 @@ body {
 
 .chat{
     float: left;
-    width: 30%;
+    min-width: 550px;
     height: 100vh;
     background-color: aquamarine;
     display: block;
@@ -18,11 +18,13 @@ body {
     height:90%;
 }
 
-.toolbar{
+.drawing-toolbar{
     height: 100vh; /* Full-height: remove this if you want "auto" height */
     width: 5%; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    //position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    display: block;
     left: 30%;
+    float: left;
     //z-index: 4; /* Stay on top */
     //top: 0; /* Stay at the top */
     background-color: #111; /* Black */
@@ -66,6 +68,7 @@ body {
 .drawingContainer{
     //height: 30%!important;
     width: 100%;
+    text-align: center;
 }
 
 .messageDrawing{
@@ -155,16 +158,16 @@ body {
 //CANVAS ZONE///////////////////////////////////
 .canvasContainer{
     //width: 1200px;
-    width: 65%;
+    //width: 65%;
     height: 100vh;
     display: block;
-    float: right;
+    //float: left;
     background-color: gainsboro;
     text-align: center;
     overflow: scroll;
 
     .buttonContainer{
-        margin-right: 5%;
+        margin-right: 75px;
         margin-top: 20px;
         float: right;
 

@@ -238,7 +238,7 @@ export class DrawingCanvasComponent implements OnInit {
 
   //Events handling
   onPointerDown(e: Event){
-    console.log("Drawing")
+    //console.log("Drawing")
 
       if(!this.isAvailable){
           return;

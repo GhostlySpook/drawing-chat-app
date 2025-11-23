@@ -18,7 +18,7 @@
 </div>
 
 <!--Toolbar-->
-<div class="toolbar center" id="divSideBar">
+<div class="drawing-toolbar" id="divSideBar">
     <!--Pencil button-->
     <input #pencilButton (click)="pencilButtonClickHandler()" type="image" src="assets/img/btnBlackPencil.png" class="toolButton" id="pencilButton" 
         [style.display]="this.drawingCanvas.toolSelected == 1 ? 'none' : 'block'"/>

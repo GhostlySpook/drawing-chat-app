@@ -112,9 +112,7 @@ export class HomeComponent implements OnInit {
   }
 
   saveDrawingButtonHandler(){
-    console.log("Saving...")
-
-    console.log(this.drawingCanvas.context)
+    //console.log("Saving...")
 
     let canvasUrl = this.drawingCanvas.drawingCanvas.toDataURL("image/jpeg");
     const createEl = document.createElement('a');
@@ -249,12 +247,12 @@ export class HomeComponent implements OnInit {
         lastDrawingNo = -1;
       }
 
-      console.log(lastDrawingNo)
+      //console.log(lastDrawingNo)
 
       //Take drawing messages from the server
       this.drawingService.getDrawingsPastId(lastDrawingNo).then((x) => {
 
-        console.log(x)
+        //console.log(x)
 
         //Add them to a temp list
         for(let item of x){
@@ -295,7 +293,7 @@ export class HomeComponent implements OnInit {
         this.messageState = "Idle";
         this.isButtonEnabled = true;
         //console.log("Loaded images in promise!");
-        console.log("Messages to load in chat:", this.messageList);
+        //console.log("Messages to load in chat:", this.messageList);
 
       }).catch((reason) => {
         console.error("Error retrieving drawings:", reason);
@@ -539,7 +537,7 @@ export class HomeComponent implements OnInit {
   pressingWindowFunction(e: Event){
     //If pencil menu is displayed, hide
     if(e.target != this.pencilButton.nativeElement && e.target != this.pencilMenu.nativeElement && e.target != this.sizeRange.nativeElement){
-        console.log("Should hide");
+        //console.log("Should hide");
         this.isPencilMenuDisplayed = false;
     }
 
