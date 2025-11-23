@@ -51,6 +51,9 @@ export class HomeComponent implements OnInit {
   loadImageInterval: any;
   milisecondsForLoading: number;
 
+  shouldScrollDown: boolean;
+  //finishedLoading = false;
+
   constructor(private drawingService: DrawingService) {
     this.textMessageInput = "";
 
@@ -75,6 +78,8 @@ export class HomeComponent implements OnInit {
     this.brushRadius = 0;
 
     this.milisecondsForLoading = 15000;
+
+    this.shouldScrollDown = false;
    }
 
   ngOnInit(): void {
@@ -98,6 +103,14 @@ export class HomeComponent implements OnInit {
 
     window.addEventListener("pointerdown", (e) => this.pressingWindowFunction(e));
   }
+
+  /*ngAfterViewChecked(){  
+    if(this.shouldScrollDown){
+      console.log("Should scroll:", this.shouldScrollDown);
+      this.scrollChatContainerDown();
+      this.shouldScrollDown = false;
+    }
+  }*/
 
   sendButtonHandler(){
     this.sendMessage();
@@ -127,8 +140,15 @@ export class HomeComponent implements OnInit {
   }
 
   scrollChatContainerDown(){
-    this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
-    console.log("Should scroll down");
+    //this.chatContainer.nativeElement.scrollTop = 900;
+    /*console.log(this.chatContainer.nativeElement.scrollTop)
+    console.log(this.chatContainer.nativeElement.scrollHeight)*/
+    if(this.shouldScrollDown){
+      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+      this.shouldScrollDown = false;
+    }
+    /*console.log(this.chatContainer.nativeElement.scrollTop)
+    console.log(this.chatContainer.nativeElement.scrollHeight)*/
   }
 
   //Toolbar buttons
@@ -257,9 +277,17 @@ export class HomeComponent implements OnInit {
         //Add them to a temp list
         for(let item of x){
           this.drawingsList.push(item);
-        }        
+        }
 
         let newDrawings = x;
+
+        if(newDrawings.length > 0 && this.chatContainer.nativeElement.scrollTop + this.chatContainer.nativeElement.clientHeight == this.chatContainer.nativeElement.scrollHeight){
+          console.log("Should scroll down")
+          console.log(this.chatContainer.nativeElement.scrollTop)
+          console.log(this.chatContainer.nativeElement.clientHeight)
+          console.log(this.chatContainer.nativeElement.scrollHeight)
+          this.shouldScrollDown = true;
+        }
 
         //Create a new image after taking the data of each received drawing
         for(let item of newDrawings){

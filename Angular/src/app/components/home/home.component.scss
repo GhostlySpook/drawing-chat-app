@@ -10,12 +10,40 @@ body {
     background-color: aquamarine;
     display: block;
     overflow: hidden;
+
+    button{
+        margin-left: 3px;
+    }
+
+    input{
+        margin-top: 10px;
+        width: 70%;
+        margin-left: 10px;
+    }
+
+    p{
+        text-align: left;
+        margin-left: 10px;
+    }
 }
 
 .chatContainer{
     overflow: scroll;
     z-index: 104;
     height:90%;
+}
+
+.drawingContainer{
+    //height: 30%!important;
+    width: 100%;
+    text-align: center;
+}
+
+.messageDrawing{
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    background-color: white;
 }
 
 .drawing-toolbar{
@@ -63,19 +91,6 @@ body {
 .toolButton.last{
     bottom: 50px;
     position:absolute;
-}
-
-.drawingContainer{
-    //height: 30%!important;
-    width: 100%;
-    text-align: center;
-}
-
-.messageDrawing{
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: cover;
-    background-color: white;
 }
 
 /*SIZE MENU////////////////////////////////////////////////////////*/

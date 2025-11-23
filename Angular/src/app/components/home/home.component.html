@@ -3,7 +3,7 @@
         <div class="drawingContainer" *ngFor='let message of messageList'>
             <p>{{message.text}}</p>
             <div *ngIf="message.path != null">
-                <img class="messageDrawing" src={{message.path}}>
+                <img (load)="scrollChatContainerDown()" class="messageDrawing" src={{message.path}}>
             </div>
             <hr class="dashed">
         </div>
