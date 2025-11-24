@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DrawingCanvasComponent } from '../drawing-canvas/drawing-canvas.component';
 import { DrawingMessage } from 'src/app/models/drawingmessage';
 import { DrawingService } from 'src/app/services/drawing.service';
-import { last } from 'rxjs';
+import { first, last } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -51,7 +51,10 @@ export class HomeComponent implements OnInit {
   loadImageInterval: any;
   milisecondsForLoading: number;
 
-  shouldScrollDown: boolean;
+  firstLoad: boolean;
+  firstLoadNo: number;
+  wasAtBottom: boolean;
+  //shouldScrollDown: boolean;
   //finishedLoading = false;
 
   constructor(private drawingService: DrawingService) {
@@ -79,7 +82,9 @@ export class HomeComponent implements OnInit {
 
     this.milisecondsForLoading = 15000;
 
-    this.shouldScrollDown = false;
+    this.wasAtBottom = false;
+    this.firstLoad = true;
+    this.firstLoadNo = 0;
    }
 
   ngOnInit(): void {
@@ -104,13 +109,13 @@ export class HomeComponent implements OnInit {
     window.addEventListener("pointerdown", (e) => this.pressingWindowFunction(e));
   }
 
-  /*ngAfterViewChecked(){  
-    if(this.shouldScrollDown){
-      console.log("Should scroll:", this.shouldScrollDown);
+  ngAfterViewChecked(){  
+    if(this.wasAtBottom){
+      //console.log("Should scroll:", this.shouldScrollDown);
       this.scrollChatContainerDown();
-      this.shouldScrollDown = false;
+      this.wasAtBottom = false;
     }
-  }*/
+  }
 
   sendButtonHandler(){
     this.sendMessage();
@@ -143,9 +148,16 @@ export class HomeComponent implements OnInit {
     //this.chatContainer.nativeElement.scrollTop = 900;
     /*console.log(this.chatContainer.nativeElement.scrollTop)
     console.log(this.chatContainer.nativeElement.scrollHeight)*/
-    if(this.shouldScrollDown){
-      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
-      this.shouldScrollDown = false;
+    if(this.wasAtBottom || this.firstLoadNo > 0){
+      if(this.firstLoadNo != 0){
+        this.firstLoadNo--
+      }
+
+      //this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+      setTimeout(() => {
+        this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+      }, 0);
+      //this.shouldScrollDown = false;
     }
     /*console.log(this.chatContainer.nativeElement.scrollTop)
     console.log(this.chatContainer.nativeElement.scrollHeight)*/
@@ -281,12 +293,10 @@ export class HomeComponent implements OnInit {
 
         let newDrawings = x;
 
-        if(newDrawings.length > 0 && this.chatContainer.nativeElement.scrollTop + this.chatContainer.nativeElement.clientHeight == this.chatContainer.nativeElement.scrollHeight){
-          console.log("Should scroll down")
-          console.log(this.chatContainer.nativeElement.scrollTop)
-          console.log(this.chatContainer.nativeElement.clientHeight)
-          console.log(this.chatContainer.nativeElement.scrollHeight)
-          this.shouldScrollDown = true;
+        this.wasAtBottom = this.chatContainer.nativeElement.scrollTop + this.chatContainer.nativeElement.clientHeight == this.chatContainer.nativeElement.scrollHeight;
+        if(newDrawings.length > 0 && this.firstLoad){
+          this.firstLoadNo = newDrawings.length
+          this.firstLoad = false;
         }
 
         //Create a new image after taking the data of each received drawing
