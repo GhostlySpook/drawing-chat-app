@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('sendButton', { static: true }) sendButton!: HTMLButtonElement;
   @ViewChild('loadButton', { static: true }) loadButton!: HTMLButtonElement;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
+  @ViewChild('modalImage') modalImage!: ElementRef;
 
   //Toolbar buttons
   @ViewChild('pencilButton', { static: true }) pencilButton!: ElementRef;
@@ -54,8 +55,14 @@ export class HomeComponent implements OnInit {
   firstLoad: boolean;
   firstLoadNo: number;
   wasAtBottom: boolean;
-  //shouldScrollDown: boolean;
-  //finishedLoading = false;
+
+  messageModalVisible: boolean;
+  isZoomedModalImage: boolean;
+
+  modalData = {
+    message: "",
+    path: ""
+  }
 
   constructor(private drawingService: DrawingService) {
     this.textMessageInput = "";
@@ -85,6 +92,9 @@ export class HomeComponent implements OnInit {
     this.wasAtBottom = false;
     this.firstLoad = true;
     this.firstLoadNo = 0;
+
+    this.messageModalVisible = false;
+    this.isZoomedModalImage = false;
    }
 
   ngOnInit(): void {
@@ -111,7 +121,6 @@ export class HomeComponent implements OnInit {
 
   ngAfterViewChecked(){  
     if(this.wasAtBottom){
-      //console.log("Should scroll:", this.shouldScrollDown);
       this.scrollChatContainerDown();
       this.wasAtBottom = false;
     }
@@ -145,22 +154,32 @@ export class HomeComponent implements OnInit {
   }
 
   scrollChatContainerDown(){
-    //this.chatContainer.nativeElement.scrollTop = 900;
-    /*console.log(this.chatContainer.nativeElement.scrollTop)
-    console.log(this.chatContainer.nativeElement.scrollHeight)*/
     if(this.wasAtBottom || this.firstLoadNo > 0){
       if(this.firstLoadNo != 0){
         this.firstLoadNo--
       }
-
-      //this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
       setTimeout(() => {
         this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
       }, 0);
-      //this.shouldScrollDown = false;
     }
-    /*console.log(this.chatContainer.nativeElement.scrollTop)
-    console.log(this.chatContainer.nativeElement.scrollHeight)*/
+  }
+
+  openMessageModal(message: any){
+    this.modalData.path = message.path;
+    this.modalData.message = message.text;
+    this.messageModalVisible = true;
+  }
+
+  closeMessageModal(){
+    this.isZoomedModalImage = false;
+    this.messageModalVisible = false;
+    this.modalData.path = "";
+    this.modalData.message = "";
+  }
+
+  zoomModalImage(){
+    this.isZoomedModalImage = !this.isZoomedModalImage;
+    console.log(this.isZoomedModalImage);
   }
 
   //Toolbar buttons

@@ -3,14 +3,14 @@
         <div class="drawingContainer" *ngFor='let message of messageList'>
             <p>{{message.text}}</p>
             <div *ngIf="message.path != null">
-                <img (load)="scrollChatContainerDown()" class="messageDrawing" src={{message.path}}>
+                <img (click)="openMessageModal(message)" (load)="scrollChatContainerDown()" class="messageDrawing" src={{message.path}}>
             </div>
             <hr class="dashed">
         </div>
     </div>
     <input #textInput [(ngModel)]="textMessageInput" class="textInput">
-    <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled">Send</button>
-    <button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button>
+    <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled || textMessageInput === ''">Send</button>
+    <!--button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button-->
     <!--button #sendDrawingButton (click)="sendDrawingButtonHandler()" [disabled]="!isButtonEnabled">Send Drawing</button-->
     <!--button (click)="testingFunction()">Test!</button>
     <button (click)="testingLoadFunction()">Test Load</button-->
@@ -72,5 +72,12 @@
     <div class="buttonContainer">
         <button (click)="saveDrawingButtonHandler()" class="saveButton">Save</button>
         <button (click)="sendDrawingButtonHandler()" class="publishButton" [disabled]="!isButtonEnabled">Publish</button>
+    </div>
+</div>
+
+<div *ngIf="messageModalVisible" class="messageModal">
+    <div class="opaqueBackground" (click)="closeMessageModal()"></div>
+    <div class="modalImageContainer">
+        <img #modalImage src={{modalData.path}} (click)="zoomModalImage()" [ngClass]="{'zoom-in': isZoomedModalImage === true}">
     </div>
 </div>

@@ -17,7 +17,7 @@ body {
 
     input{
         margin-top: 10px;
-        width: 70%;
+        width: 80%;
         margin-left: 10px;
     }
 
@@ -36,6 +36,9 @@ body {
 .drawingContainer{
     //height: 30%!important;
     width: 100%;
+    max-width: 550px;
+    overflow-wrap: break-word;
+    //max-width: 600px;
     text-align: center;
 }
 
@@ -44,6 +47,47 @@ body {
     max-width: 100%;
     object-fit: cover;
     background-color: white;
+    cursor: pointer;
+}
+
+.messageModal{
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+
+    display: flex;
+    justify-content: center;   // horizontal centering
+    align-items: center;  
+    overflow: scroll;
+    //top: 0vh;
+    //left: 0vw;
+    //z-index: 10000000000000;
+
+    .opaqueBackground{
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background-color: gray;
+        opacity: 0.7;
+    }
+
+    .modalImageContainer{
+        //top: 0;
+        //left: 0;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        //margin: auto;
+        cursor: zoom-in;
+    }
+
+    .zoom-in{
+        cursor: zoom-out;
+        width: 70vw;
+    }
 }
 
 .drawing-toolbar{
