@@ -1,5 +1,5 @@
 <div class="chat">
-    <div #chatContainer class="chatContainer">
+    <div #chatContainer class="chatContainer" (scroll)="scrollChatContainerHandler()">
         <div class="drawingContainer" *ngFor='let message of messageList'>
             <p>{{message.text}}</p>
             <div *ngIf="message.path != null">
@@ -81,3 +81,5 @@
         <img #modalImage src={{modalData.path}} (click)="zoomModalImage()" [ngClass]="{'zoom-in': isZoomedModalImage === true}">
     </div>
 </div>
+
+<div *ngIf="isNewMessageAlertShown"><p>NEW MESSAGE!</p></div>

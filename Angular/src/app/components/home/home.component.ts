@@ -59,6 +59,8 @@ export class HomeComponent implements OnInit {
   messageModalVisible: boolean;
   isZoomedModalImage: boolean;
 
+  isNewMessageAlertShown: boolean;
+
   modalData = {
     message: "",
     path: ""
@@ -95,6 +97,8 @@ export class HomeComponent implements OnInit {
 
     this.messageModalVisible = false;
     this.isZoomedModalImage = false;
+
+    this.isNewMessageAlertShown = false;
    }
 
   ngOnInit(): void {
@@ -153,6 +157,15 @@ export class HomeComponent implements OnInit {
     createEl.remove();
   }
 
+  scrollChatContainerHandler(){
+    //This checks if it is at the bottom
+    /*console.log(this.chatContainer.nativeElement.scrollTop)
+    console.log(this.chatContainer.nativeElement.clientHeight)
+    console.log(this.chatContainer.nativeElement.scrollHeight)*/
+    if(this.chatContainer.nativeElement.scrollTop + this.chatContainer.nativeElement.clientHeight == this.chatContainer.nativeElement.scrollHeight)
+      this.isNewMessageAlertShown = false;
+  }
+
   scrollChatContainerDown(){
     if(this.wasAtBottom || this.firstLoadNo > 0){
       if(this.firstLoadNo != 0){
@@ -164,6 +177,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  //Modal Functions--------------------------------
   openMessageModal(message: any){
     this.modalData.path = message.path;
     this.modalData.message = message.text;
@@ -181,6 +195,8 @@ export class HomeComponent implements OnInit {
     this.isZoomedModalImage = !this.isZoomedModalImage;
     console.log(this.isZoomedModalImage);
   }
+
+  //END Modal Functions--------------------------------
 
   //Toolbar buttons
   sizeRangeChangeHandler(){
@@ -312,6 +328,7 @@ export class HomeComponent implements OnInit {
 
         let newDrawings = x;
 
+        //This flag is used to tell if this is the first load and should scroll to the bottom from the start
         this.wasAtBottom = this.chatContainer.nativeElement.scrollTop + this.chatContainer.nativeElement.clientHeight == this.chatContainer.nativeElement.scrollHeight;
         if(newDrawings.length > 0 && this.firstLoad){
           this.firstLoadNo = newDrawings.length
@@ -349,6 +366,10 @@ export class HomeComponent implements OnInit {
 
         this.messageState = "Idle";
         this.isButtonEnabled = true;
+
+        if(!this.wasAtBottom)
+          this.isNewMessageAlertShown = true;
+
         //console.log("Loaded images in promise!");
         //console.log("Messages to load in chat:", this.messageList);
 
