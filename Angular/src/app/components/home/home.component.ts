@@ -145,7 +145,17 @@ export class HomeComponent implements OnInit {
   saveDrawingButtonHandler(){
     //console.log("Saving...")
 
-    let canvasUrl = this.drawingCanvas.drawingCanvas.toDataURL("image/jpeg");
+    let imagedata = this.drawingCanvas.getCanvasImage()
+
+    this.conversionCanvas.width = imagedata.width;
+    this.conversionCanvas.height = imagedata.height;
+
+    let conversionContext = this.conversionCanvas.getContext("2d");
+    conversionContext.fillStyle = window.getComputedStyle(this.drawingCanvas.drawingCanvas).backgroundColor;
+    conversionContext.fillRect(0, 0, imagedata.width, imagedata.height);
+    conversionContext.drawImage(this.drawingCanvas.drawingCanvas, 0, 0, imagedata.width, imagedata.height);
+
+    let canvasUrl = this.conversionCanvas.toDataURL("image/jpeg");
     const createEl = document.createElement('a');
     createEl.href = canvasUrl;
 
@@ -158,23 +168,28 @@ export class HomeComponent implements OnInit {
   }
 
   scrollChatContainerHandler(){
-    //This checks if it is at the bottom
-    /*console.log(this.chatContainer.nativeElement.scrollTop)
-    console.log(this.chatContainer.nativeElement.clientHeight)
-    console.log(this.chatContainer.nativeElement.scrollHeight)*/
     if(this.chatContainer.nativeElement.scrollTop + this.chatContainer.nativeElement.clientHeight == this.chatContainer.nativeElement.scrollHeight)
       this.isNewMessageAlertShown = false;
   }
 
   scrollChatContainerDown(){
+    //console.log("Was at bottom: ", this.wasAtBottom)
     if(this.wasAtBottom || this.firstLoadNo > 0){
       if(this.firstLoadNo != 0){
+        if(this.firstLoadNo == 1){
+          this.wasAtBottom = false;
+        }
+
         this.firstLoadNo--
       }
       setTimeout(() => {
         this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
       }, 0);
     }
+  }
+
+  scrollChatContainerDownForced(){
+    this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
   }
 
   //Modal Functions--------------------------------
@@ -193,7 +208,7 @@ export class HomeComponent implements OnInit {
 
   zoomModalImage(){
     this.isZoomedModalImage = !this.isZoomedModalImage;
-    console.log(this.isZoomedModalImage);
+    //console.log(this.isZoomedModalImage);
   }
 
   //END Modal Functions--------------------------------
@@ -330,6 +345,7 @@ export class HomeComponent implements OnInit {
 
         //This flag is used to tell if this is the first load and should scroll to the bottom from the start
         this.wasAtBottom = this.chatContainer.nativeElement.scrollTop + this.chatContainer.nativeElement.clientHeight == this.chatContainer.nativeElement.scrollHeight;
+        
         if(newDrawings.length > 0 && this.firstLoad){
           this.firstLoadNo = newDrawings.length
           this.firstLoad = false;
@@ -367,8 +383,10 @@ export class HomeComponent implements OnInit {
         this.messageState = "Idle";
         this.isButtonEnabled = true;
 
-        if(!this.wasAtBottom)
+        if(!this.wasAtBottom && newDrawings.length > 0){
+          //console.log("Would show new message")
           this.isNewMessageAlertShown = true;
+        }
 
         //console.log("Loaded images in promise!");
         //console.log("Messages to load in chat:", this.messageList);
@@ -462,6 +480,7 @@ export class HomeComponent implements OnInit {
 
   sendMessage(){
     return new Promise<any>((resolve, reject) => {
+      this.scrollChatContainerDownForced()
       clearInterval(this.loadImageInterval);
 
       this.isButtonEnabled = false;
@@ -494,13 +513,14 @@ export class HomeComponent implements OnInit {
   sendImage(){
 
     return new Promise<any>((resolve, reject) => {
+      this.scrollChatContainerDownForced()
       this.isButtonEnabled = false;
       this.messageState = "Sending";
 
       let imagedata = this.drawingCanvas.getCanvasImage()
 
-      let newWidth = 0;
-      let newHeight = 0;
+      let newWidth = imagedata.width;
+      let newHeight = imagedata.height;
       let ratio = 0;
 
       let willResize = false;
@@ -524,17 +544,15 @@ export class HomeComponent implements OnInit {
         willResize = true;
       }
 
-      if(willResize){
-        //console.log("Will resize: ", imagedata);
-        this.conversionCanvas.width = newWidth;
-        this.conversionCanvas.height = newHeight;
-        let conversionContext = this.conversionCanvas.getContext("2d");
-        //console.log("Drawing canvas: ", this.drawingCanvas);
+      let conversionContext = this.conversionCanvas.getContext("2d");
+      this.conversionCanvas.width = newWidth;
+      this.conversionCanvas.height = newHeight;
 
-        conversionContext.drawImage(this.drawingCanvas.drawingCanvas, 0, 0, newWidth, newHeight);
-        imagedata = conversionContext.getImageData(0, 0, this.conversionCanvas.width, this.conversionCanvas.height)
-        //console.log(imagedata);
-      }      
+      //Fill background with the background color of the canvas
+      conversionContext.fillStyle = window.getComputedStyle(this.drawingCanvas.drawingCanvas).backgroundColor;
+      conversionContext.fillRect(0, 0, newWidth, newHeight);
+      conversionContext.drawImage(this.drawingCanvas.drawingCanvas, 0, 0, newWidth, newHeight);
+      imagedata = conversionContext.getImageData(0, 0, this.conversionCanvas.width, this.conversionCanvas.height)
 
       let drawingMessage: DrawingMessage = {
         data: imagedata.data,
