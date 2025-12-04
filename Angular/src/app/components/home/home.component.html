@@ -2,6 +2,7 @@
     <p *ngIf="isNewMessageAlertShown" class="newMessageAlert" (click)="scrollChatContainerDownForced()">NEW MESSAGE!</p>
     <div #chatContainer class="chatContainer" (scroll)="scrollChatContainerHandler()">
         <div class="drawingContainer" *ngFor='let message of messageList'>
+            <b>{{message.username}}</b>
             <p>{{message.text}}</p>
             <div *ngIf="message.path != null">
                 <img (click)="openMessageModal(message)" (load)="scrollChatContainerDown()" class="messageDrawing" src={{message.path}}>
@@ -9,13 +10,13 @@
             <hr class="dashed">
         </div>
     </div>
-    <input #textInput [(ngModel)]="textMessageInput" class="textInput">
-    <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled || textMessageInput === ''">Send</button>
+    <input #textInput [(ngModel)]="textMessageInput" class="textInput" maxlength="128">
+    <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled || textMessageInput === '' || usernameInput===''">Send</button>
     <!--button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button-->
     <!--button #sendDrawingButton (click)="sendDrawingButtonHandler()" [disabled]="!isButtonEnabled">Send Drawing</button-->
     <!--button (click)="testingFunction()">Test!</button>
     <button (click)="testingLoadFunction()">Test Load</button-->
-    <p>Message State: {{messageState}}</p>
+    <p>Username:<input [(ngModel)]="usernameInput" class="usernameInput" maxlength="16"><span> Message State: {{messageState}}</span></p>
 </div>
 
 <!--Toolbar-->

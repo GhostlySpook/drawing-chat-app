@@ -2,10 +2,11 @@ pool = require("../db.js");
 
 let message_list = [];
 let messageId = 0;
-let message_limit = 5;
+let message_limit = 10;
 let drawing_width_limit = 512;
 let drawing_height_limit = 512;
 let message_length_limit = 128;
+let username_length_limit = 16;
 
 const Drawings = {
 
@@ -72,6 +73,11 @@ const Drawings = {
         //Check text message isn't too big
         if(message.textMessage > message_length_limit){
           throw("Text message is too long");
+        }
+
+        //Check text message isn't too big
+        if(message.username > username_length_limit){
+          throw("Username is too long");
         }
 
       } catch (error) {

@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('colourMenu', { static: true }) colourMenu!: ElementRef;
 
   textMessageInput: string;
+  usernameInput: string;
 
   //imagesPaths: any = [];
   messageList: any = [];
@@ -68,6 +69,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private drawingService: DrawingService) {
     this.textMessageInput = "";
+    this.usernameInput = "User :-)";
 
     this.conversionCanvas = document.createElement("canvas");
     this.messageState = "Idle";
@@ -373,10 +375,10 @@ export class HomeComponent implements OnInit {
             //Create an image inside a canvas using the new ImageData and add it to the imagesPaths variable to display them
             conversionContext.putImageData(idata, 0, 0);
             //this.imagesPaths.push(this.conversionCanvas.toDataURL("image/png"));
-            this.messageList.push({path: this.conversionCanvas.toDataURL("image/png"), text: item.textMessage});
+            this.messageList.push({path: this.conversionCanvas.toDataURL("image/png"), text: item.textMessage, username: item.username});
           }
           else{
-            this.messageList.push({path: null, text: item.textMessage});
+            this.messageList.push({path: null, text: item.textMessage, username: item.username});
           }
         }
 
@@ -459,7 +461,7 @@ export class HomeComponent implements OnInit {
           //Create an image inside a canvas using the new ImageData and add it to the imagesPaths variable to display them
           conversionContext.putImageData(idata, 0, 0);
 
-          this.messageList.push({path: this.conversionCanvas.toDataURL("image/png"), text: item.textMessage});
+          this.messageList.push({path: this.conversionCanvas.toDataURL("image/png"), text: item.textMessage, username: item.username});
           //this.imagesPaths.push(this.conversionCanvas.toDataURL("image/png"));
         }
 
@@ -491,6 +493,7 @@ export class HomeComponent implements OnInit {
         width: null,
         height: null,
         colorSpace: null,
+        username: this.usernameInput,
         textMessage: this.textMessageInput
       }
 
@@ -559,6 +562,7 @@ export class HomeComponent implements OnInit {
         width: imagedata.width,
         height: imagedata.height,
         colorSpace: imagedata.colorSpace,
+        username: this.usernameInput,
         textMessage: this.textMessageInput
       }
 

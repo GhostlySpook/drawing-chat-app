@@ -4,5 +4,6 @@ export type DrawingMessage = {
     height: number | null,
     colorSpace: string | null,
     textMessage: string | null,
+    username: string,
     id?: number
 }
