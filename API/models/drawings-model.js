@@ -3,8 +3,8 @@ pool = require("../db.js");
 let message_list = [];
 let messageId = 0;
 let message_limit = 10;
-let drawing_width_limit = 512;
-let drawing_height_limit = 512;
+let drawing_width_limit = 1100;
+let drawing_height_limit = 800;
 let message_length_limit = 128;
 let username_length_limit = 16;
 

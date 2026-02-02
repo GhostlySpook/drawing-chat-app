@@ -57,11 +57,17 @@ body {
 
 .drawingContainer{
     //height: 30%!important;
+    margin-top: 10px;
     width: 100%;
     max-width: 550px;
     overflow-wrap: break-word;
     //max-width: 600px;
     text-align: center;
+}
+
+.redrawButton{
+    float: right;
+    margin-right: 10px;
 }
 
 .messageDrawing{

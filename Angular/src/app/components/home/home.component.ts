@@ -62,6 +62,8 @@ export class HomeComponent implements OnInit {
 
   isNewMessageAlertShown: boolean;
 
+  selectAudio: any;
+
   modalData = {
     message: "",
     path: ""
@@ -101,6 +103,8 @@ export class HomeComponent implements OnInit {
     this.isZoomedModalImage = false;
 
     this.isNewMessageAlertShown = false;
+    
+    this.selectAudio = new Audio('assets/sound/select.mp3')
    }
 
   ngOnInit(): void {
@@ -194,6 +198,15 @@ export class HomeComponent implements OnInit {
     this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
   }
 
+  copyDrawingIntoCanvas(path: any){
+    console.log(path)
+    let image = new Image()
+    image.src = path;
+
+    this.drawingCanvas.context.drawImage(image, 0, 0, 1100, 800)
+    this.drawingCanvas.addRedo(this.drawingCanvas.getCanvasImage())
+  }
+
   //Modal Functions--------------------------------
   openMessageModal(message: any){
     this.modalData.path = message.path;
@@ -241,10 +254,12 @@ export class HomeComponent implements OnInit {
 
       //Make the pencil menu appear
       this.pencilMenuHide();
+      this.selectAudio.play();
   }
 
   pencilMenuButtonClickHandler(){
       this.pencilMenuToggle();
+      this.selectAudio.play();
   }
 
   eraserButtonClickHandler(){
@@ -255,20 +270,24 @@ export class HomeComponent implements OnInit {
       this.drawingCanvas.context.lineWidth = this.drawingCanvas.eraserRadius * 2;
 
       this.drawingCanvas.changeCursor(DrawingCanvasComponent.cursorPath.ERASER);
+      this.selectAudio.play();
   }
 
   bucketButtonClickHandler(){
       this.drawingCanvas.toolSelected = DrawingCanvasComponent.drawingCanvasTools.BUCKET;
       this.drawingCanvas.changeCursor(DrawingCanvasComponent.cursorPath.BUCKET);
+      this.selectAudio.play();
   }
 
   bombButtonClickHandler(){
       this.drawingCanvas.bombClear();
       this.pencilButtonClickHandler();
+      this.selectAudio.play();
   }
 
   showColoursButtonHandler(){
     this.isColourMenuDisplayed = !this.isColourMenuDisplayed;
+    this.selectAudio.play();
   }
 
   colourButtonHandler(colour: string){
@@ -276,6 +295,8 @@ export class HomeComponent implements OnInit {
     this.drawingCanvas.context.strokeStyle = colour;
 
     this.isColourMenuDisplayed = false;
+
+    this.selectAudio.play();
 
     //this.btnColourContainer.nativeElement.style.background = colour;
 
@@ -293,6 +314,7 @@ export class HomeComponent implements OnInit {
       //Show previous frame
       this.drawingCanvas.redoPointer--;
       this.drawingCanvas.context.putImageData(this.drawingCanvas.redoFramesList[this.drawingCanvas.redoPointer], 0, 0);
+      this.selectAudio.play();
 
       return true;
   }
@@ -307,6 +329,8 @@ export class HomeComponent implements OnInit {
       //Show previous frame
       this.drawingCanvas.redoPointer++;
       this.drawingCanvas.context.putImageData(this.drawingCanvas.redoFramesList[this.drawingCanvas.redoPointer], 0, 0);
+
+      this.selectAudio.play();
 
       return true;
   }

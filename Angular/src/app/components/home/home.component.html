@@ -1,8 +1,11 @@
 <div class="chat">
     <p *ngIf="isNewMessageAlertShown" class="newMessageAlert" (click)="scrollChatContainerDownForced()">NEW MESSAGE!</p>
+    <!--Chat container where messages are added-->
     <div #chatContainer class="chatContainer" (scroll)="scrollChatContainerHandler()">
         <div class="drawingContainer" *ngFor='let message of messageList'>
-            <b>{{message.username}}</b>
+            <b>{{message.username}} 
+                <button *ngIf="message.path != null" class="redrawButton" (click)="copyDrawingIntoCanvas(message.path)">Redraw</button>
+            </b>
             <p>{{message.text}}</p>
             <div *ngIf="message.path != null">
                 <img (click)="openMessageModal(message)" (load)="scrollChatContainerDown()" class="messageDrawing" src={{message.path}}>
