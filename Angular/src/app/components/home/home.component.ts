@@ -237,6 +237,8 @@ export class HomeComponent implements OnInit {
       this.drawingCanvas.context.lineJoin = "round";
       this.drawingCanvas.context.lineWidth = this.drawingCanvas.brushRadius;
 
+      this.drawingCanvas.changeCursor(DrawingCanvasComponent.cursorPath.PENCIL);
+
       //Make the pencil menu appear
       this.pencilMenuHide();
   }
@@ -251,10 +253,13 @@ export class HomeComponent implements OnInit {
       this.drawingCanvas.context.lineCap = "round";
       this.drawingCanvas.context.lineJoin = "round";
       this.drawingCanvas.context.lineWidth = this.drawingCanvas.eraserRadius * 2;
+
+      this.drawingCanvas.changeCursor(DrawingCanvasComponent.cursorPath.ERASER);
   }
 
   bucketButtonClickHandler(){
       this.drawingCanvas.toolSelected = DrawingCanvasComponent.drawingCanvasTools.BUCKET;
+      this.drawingCanvas.changeCursor(DrawingCanvasComponent.cursorPath.BUCKET);
   }
 
   bombButtonClickHandler(){

@@ -41,7 +41,13 @@ export class DrawingCanvasComponent implements OnInit {
         //Alpha is 255 for complete coloring from the filling
         a: 255
       } : null;
-  }  
+  }
+
+  static cursorPath = {
+    PENCIL: 'url("assets/img/cursorPencil.png"), auto',
+    BUCKET: 'url("assets/img/cursorBucket.png") 5 38, auto',
+    ERASER: 'url("assets/img/cursorEraser.png") 0 18, auto',
+  }
   
   drawingCanvas: any;
   context: any;
@@ -80,6 +86,8 @@ export class DrawingCanvasComponent implements OnInit {
 
     this.drawingCanvas.width = 1100//window.innerWidth * 0.65;
     this.drawingCanvas.height = 800//window.innerHeight;
+
+    this.changeCursor(DrawingCanvasComponent.cursorPath.PENCIL)
   }
 
   ngAfterViewInit() {
@@ -234,6 +242,10 @@ export class DrawingCanvasComponent implements OnInit {
   clearCanvas(){
     this.context.clearRect(0, 0, this.drawingCanvas.width, this.drawingCanvas.height);
     this.bucketFill(0, 0, DrawingCanvasComponent.hexColour.WHITE);
+  }
+
+  changeCursor(cursor: string){
+    this.drawingCanvas.style.cursor = cursor;
   }
 
   //Events handling
