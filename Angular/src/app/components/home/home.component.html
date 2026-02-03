@@ -19,7 +19,7 @@
     <!--button #sendDrawingButton (click)="sendDrawingButtonHandler()" [disabled]="!isButtonEnabled">Send Drawing</button-->
     <!--button (click)="testingFunction()">Test!</button>
     <button (click)="testingLoadFunction()">Test Load</button-->
-    <p>Username:<input [(ngModel)]="usernameInput" class="usernameInput" maxlength="16"><span> Message State: {{messageState}}</span></p>
+    <p>Username:<input [(ngModel)]="usernameInput" class="usernameInput" maxlength="16" (keypress)="userNameInputKeypressHandler($event);" (blur)="saveUsernameInCookie();"><span> Message State: {{messageState}}</span></p>
 </div>
 
 <!--Toolbar-->
@@ -48,21 +48,23 @@
         [style.display]="this.drawingCanvas.toolSelected == 3 ? 'block' : 'none'"/>
 
     <!--Colour button-->
-    <div class="toolButton" #btnColourContainer (click)="showColoursButtonHandler()"
+    <!--div class="toolButton" #btnColourContainer (click)="showColoursButtonHandler()"
         [style.height]="btnColourContainer.clientWidth + 'px'"
-        [style.background]="this.drawingCanvas.colourSelected"></div>
+        [style.background]="this.drawingCanvas.colourSelected"></div-->
     <!--The container where colours are found-->
-    <div #colourMenu id="colourMenu"
-        [style.display]="isColourMenuDisplayed ? 'block' : 'none' ">
+    <!--div #colourMenu id="colourMenu"
+        [style.display]="isColourMenuDisplayed ? 'block' : 'none' "-->
         <!--The colours to be chosen-->
-        <svg *ngFor='let colour of this.drawingCanvas.getHexColours()'
+        <!--svg *ngFor='let colour of this.drawingCanvas.getHexColours()'
             class="svgBtnColour"
             (click)="colourButtonHandler(colour)"
             [style.width]="colourButtonWidth + 'px'"
             [style.height]="colourButtonHeight + 'px'"
             [style.background]="colour"
         >{{colour}}</svg>
-    </div>
+    </div-->
+
+    <input type="color" id="selectedColourPicker" value="#000000" (change)="selectColour($event)"/>
     
     <!--Redo buttons-->
     <div id="redoContainer">

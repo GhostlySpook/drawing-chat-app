@@ -148,13 +148,14 @@ body {
 }
 
 #redoContainer{
-    width: 85%;
+    width: 100%;
     padding-top:10%;
-    padding-left: 5%;
+    //padding-left: 5%;
 }
 
 #redoContainer .toolButton{
-    width: 40%;
+    width: 43%;
+    margin:0;
     left: 0;
     padding: 0;
     display: inline;
@@ -187,11 +188,16 @@ body {
 /*////////////////////////////////////////////////////////*/
 
 /*COLOUR MENU/////////////////////////////////////////////*/
-#btnColourContainer{
-    width: 93%;
+#selectedColourPicker{
+    width: 100%;
+    height: 40px;
 }
 
-#colourContainer{
+/*#btnColourContainer{
+    width: 93%;
+}*/
+
+/*#colourContainer{
     background: lightblue;
     display: none;
     position: absolute;
@@ -235,7 +241,7 @@ body {
     height:100%;
     fill: gray;
     z-index: 5;
-}
+}*/
 
 /*General*/
 .selected{

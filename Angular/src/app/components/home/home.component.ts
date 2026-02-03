@@ -71,7 +71,18 @@ export class HomeComponent implements OnInit {
 
   constructor(private drawingService: DrawingService) {
     this.textMessageInput = "";
-    this.usernameInput = "User :-)";
+
+    let storagedUsername = localStorage.getItem('username');
+
+    if(storagedUsername == null){
+      console.log("Didn't find username")
+      localStorage.setItem('username', 'User :-)')
+      this.usernameInput = 'User :-)';
+    }
+    else{
+      this.usernameInput = storagedUsername;
+      console.log("Found username!", this.usernameInput)
+    }
 
     this.conversionCanvas = document.createElement("canvas");
     this.messageState = "Idle";
@@ -113,12 +124,12 @@ export class HomeComponent implements OnInit {
     this.loadMessages();
 
     //Resize colour button
-    this.colourMenu.nativeElement.style.display="block";
+    /*this.colourMenu.nativeElement.style.display="block";
 
     this.colourButtonWidth = (this.colourMenu.nativeElement.clientWidth / Object.keys(DrawingCanvasComponent.hexColour).length) - 0.1;
     this.colourButtonHeight = this.colourMenu.nativeElement.clientHeight;
 
-    this.colourMenu.nativeElement.style.display="none";
+    this.colourMenu.nativeElement.style.display="none";*/
 
     //Add an interval to load images every now and then
     this.loadImageInterval = setInterval(() => this.loadMessages(), this.milisecondsForLoading);
@@ -304,6 +315,14 @@ export class HomeComponent implements OnInit {
     //colourMenu.hide();
   }
 
+  selectColour(e: any){
+    //console.log(e.target.value);
+    let color = e.target.value;
+
+    this.drawingCanvas.colourSelected = color;
+    this.drawingCanvas.context.strokeStyle = color;
+  }
+
   undoButtonClickHandler(){
 
       //If it is the first step, don't do anything
@@ -333,6 +352,16 @@ export class HomeComponent implements OnInit {
       this.selectAudio.play();
 
       return true;
+  }
+
+  userNameInputKeypressHandler(e: any){
+    if(e.key == 'Enter'){
+      this.saveUsernameInCookie();
+    }
+  }
+  
+  saveUsernameInCookie(){
+    localStorage.setItem("username", this.usernameInput);
   }
 
   loadMessages(){ 
