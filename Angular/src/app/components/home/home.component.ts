@@ -31,6 +31,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('btnColourContainer', { static: true }) btnColourContainer!: ElementRef;
   @ViewChild('colourMenu', { static: true }) colourMenu!: ElementRef;
 
+  @ViewChild('avatarModal', { static: true }) avatarModal!: ElementRef;
+  @ViewChild('avatarTable', { static: true }) avatarTable!: ElementRef<HTMLTableElement>;
+
   textMessageInput: string;
   usernameInput: string;
 
@@ -60,6 +63,10 @@ export class HomeComponent implements OnInit {
   messageModalVisible: boolean;
   isZoomedModalImage: boolean;
 
+  avatarPixelData: Array<string>;
+  //avatarModalVisible: boolean;
+  selectedAvatarColour: string;
+
   isNewMessageAlertShown: boolean;
 
   selectAudio: any;
@@ -72,16 +79,28 @@ export class HomeComponent implements OnInit {
   constructor(private drawingService: DrawingService) {
     this.textMessageInput = "";
 
+    //Load Username!
     let storagedUsername = localStorage.getItem('username');
 
     if(storagedUsername == null){
-      console.log("Didn't find username")
+      //console.log("Didn't find username")
       localStorage.setItem('username', 'User :-)')
       this.usernameInput = 'User :-)';
     }
     else{
       this.usernameInput = storagedUsername;
-      console.log("Found username!", this.usernameInput)
+      //console.log("Found username!", this.usernameInput)
+    }
+
+    //Load Avatar!
+    let storagedAvatar = localStorage.getItem('avatar');
+    if(storagedAvatar == null){
+      console.log("Didn't find avatar")
+      this.avatarPixelData = [].constructor(64).fill("#ffffff")
+    }
+    else{
+      this.avatarPixelData = JSON.parse(storagedAvatar);
+      console.log("Found avatar!", this.avatarPixelData)
     }
 
     this.conversionCanvas = document.createElement("canvas");
@@ -113,6 +132,9 @@ export class HomeComponent implements OnInit {
     this.messageModalVisible = false;
     this.isZoomedModalImage = false;
 
+    //this.avatarModalVisible = false;
+    this.selectedAvatarColour = "#000000";
+
     this.isNewMessageAlertShown = false;
     
     this.selectAudio = new Audio('assets/sound/select.mp3')
@@ -122,14 +144,6 @@ export class HomeComponent implements OnInit {
     this.messageState = "Loading";
     this.isButtonEnabled = false;
     this.loadMessages();
-
-    //Resize colour button
-    /*this.colourMenu.nativeElement.style.display="block";
-
-    this.colourButtonWidth = (this.colourMenu.nativeElement.clientWidth / Object.keys(DrawingCanvasComponent.hexColour).length) - 0.1;
-    this.colourButtonHeight = this.colourMenu.nativeElement.clientHeight;
-
-    this.colourMenu.nativeElement.style.display="none";*/
 
     //Add an interval to load images every now and then
     this.loadImageInterval = setInterval(() => this.loadMessages(), this.milisecondsForLoading);
@@ -362,6 +376,76 @@ export class HomeComponent implements OnInit {
   
   saveUsernameInCookie(){
     localStorage.setItem("username", this.usernameInput);
+  }
+
+  selectAvatarColour(e: any){
+    let color = e.target.value;
+    this.selectedAvatarColour = color;
+  }
+
+  showAvatarModal(){
+    for(let rowNum = 0; rowNum < this.avatarTable.nativeElement.rows.length; rowNum++){
+      let row = this.avatarTable.nativeElement.rows[rowNum]
+
+      for(let col = 0; col < row.cells.length; col++){
+        let cell = row.cells[col]
+        cell.style.backgroundColor = this.avatarPixelData[rowNum*8 + col];
+      }
+    }
+
+    this.avatarModal.nativeElement.style.display = 'flex'
+  }
+
+  hideAvatarModal(){
+    this.avatarModal.nativeElement.style.display = 'none'
+  }
+
+  fillAvatarPixel(e: any){
+    //console.log(e.target.style.backgroundColor)
+
+    //Color cell
+    e.target.style.backgroundColor = this.selectedAvatarColour;
+
+    //Get the pixel id
+    //let pixelId = Number(e.target.getAttribute("pixelId"));
+    //console.log(pixelId)
+
+    //Save the color in the pixel array
+    //this.avatarPixelData[pixelId] = this.selectedAvatarColour;
+    //console.log(this.avatarPixelData)
+  }
+
+  fillAvatar(){
+    for(let rowNum = 0; rowNum < this.avatarTable.nativeElement.rows.length; rowNum++){
+      let row = this.avatarTable.nativeElement.rows[rowNum]
+      //console.log(row)
+
+      for(let col = 0; col < row.cells.length; col++){
+        let cell = row.cells[col]
+        cell.style.backgroundColor = this.selectedAvatarColour;
+      }
+    }
+  }
+
+  saveAvatar(){
+    console.log("Table:", this.avatarTable)
+
+    for(let rowNum = 0; rowNum < this.avatarTable.nativeElement.rows.length; rowNum++){
+      let row = this.avatarTable.nativeElement.rows[rowNum]
+      //console.log(row)
+
+      for(let col = 0; col < row.cells.length; col++){
+        let cell = row.cells[col]
+        this.avatarPixelData[rowNum*8 + col] = cell.style.backgroundColor;
+      }
+    }
+
+    localStorage.setItem('avatar', JSON.stringify(this.avatarPixelData))
+    //this.avatarModalVisible = false;
+
+    //console.log(this.avatarPixelData)
+    this.avatarModal.nativeElement.style.display = 'none'
+    //console.log(this.avatarModalVisible)
   }
 
   loadMessages(){ 

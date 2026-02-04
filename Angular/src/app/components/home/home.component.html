@@ -19,7 +19,19 @@
     <!--button #sendDrawingButton (click)="sendDrawingButtonHandler()" [disabled]="!isButtonEnabled">Send Drawing</button-->
     <!--button (click)="testingFunction()">Test!</button>
     <button (click)="testingLoadFunction()">Test Load</button-->
-    <p>Username:<input [(ngModel)]="usernameInput" class="usernameInput" maxlength="16" (keypress)="userNameInputKeypressHandler($event);" (blur)="saveUsernameInCookie();"><span> Message State: {{messageState}}</span></p>
+    <div id="userDataDiv">
+        <table (click)="showAvatarModal()" #avatarChatTable class="avatarChatTable" id="avatarChatTable">
+            <tr *ngFor='let _ of [].constructor(8); let rowIndex = index'>
+                <td [attr.pixelId]="rowIndex*8+colIndex" 
+                    *ngFor='let _ of [].constructor(8); let colIndex = index' 
+                    [ngStyle]="{'background-color': avatarPixelData[rowIndex*8+colIndex]}"
+                >
+                </td>
+            </tr>
+        </table>
+        <p>User:<input [(ngModel)]="usernameInput" class="usernameInput" maxlength="16" (keypress)="userNameInputKeypressHandler($event);" (blur)="saveUsernameInCookie();"><span> State: {{messageState}}</span>
+        <!--button (click)="showAvatarModal()">Open avatar editor</button></p-->
+    </div>
 </div>
 
 <!--Toolbar-->
@@ -82,9 +94,38 @@
     </div>
 </div>
 
+<!--Show drawing selected-->
 <div *ngIf="messageModalVisible" class="messageModal">
     <div class="opaqueBackground" (click)="closeMessageModal()"></div>
     <div class="modalImageContainer">
         <img #modalImage src={{modalData.path}} (click)="zoomModalImage()" [ngClass]="{'zoom-in': isZoomedModalImage === true}">
     </div>
+</div>
+
+<!--Show drawing selected-->
+<div #avatarModal id="avatarModal" class="avatarModal">
+    <button id="cancelAvatarChanges" (click)="hideAvatarModal()">Cancel</button>
+    <div id="avatarOptions">
+        <p>Selected color</p>
+        <input type="color" id="avatarColourPicker" [(ngModel)]="selectedAvatarColour" (change)="selectAvatarColour($event)"/>
+        <br>
+        <br>
+        <button (click)="fillAvatar()">Fill all with color</button>
+    </div>
+    <table #avatarTable class="avatarTable" id="avatarTable">
+        <tr *ngFor='let _ of [].constructor(8); let rowIndex = index'>
+            <td [attr.pixelId]="rowIndex*8+colIndex" 
+                *ngFor='let _ of [].constructor(8); let colIndex = index' 
+                (pointerdown)="fillAvatarPixel($event)"
+                [ngStyle]="{'background-color': avatarPixelData[rowIndex*8+colIndex]}"
+            >
+            </td>
+        </tr>
+    </table>
+
+    <button class="saveAvatarButton" (click)="saveAvatar()">Save Avatar</button>
+    <!--div class="opaqueBackground" (click)="closeAvatarModal()"></div-->
+    <!--div class="modalImageContainer">
+        <img #modalImage src={{modalData.path}} (click)="zoomModalImage()" [ngClass]="{'zoom-in': isZoomedModalImage === true}">
+    </div-->
 </div>

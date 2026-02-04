@@ -18,12 +18,13 @@ body {
 
     .textInput{
         margin-top: 10px;
-        width: 80%;
+        width: 85%;
         margin-left: 10px;
     }
 
     .usernameInput{
-        width: 30%;
+        width: 40%;
+        margin-left: 10px;
     }
 
     b, p{
@@ -53,6 +54,29 @@ body {
     overflow: scroll;
     z-index: 104;
     height:90%;
+}
+
+#userDataDiv{
+    padding-top: 10px;
+    padding-left: 10px;
+    width: 100%;
+    display: block;
+
+    table{
+        width: 40px;
+        height: 40px;
+        float: left;
+        border-collapse: collapse;
+        caret-color: transparent;
+
+        user-select: none;
+        touch-action: none;
+    }
+
+    p{
+        float: left;
+        width: 90%;
+    }
 }
 
 .drawingContainer{
@@ -117,6 +141,66 @@ body {
         width: 70vw;
     }
 }
+
+//Avatar creation modal
+.avatarModal{
+    width: 800px;
+    height: 700px;
+    //margin-left: auto;
+    position: absolute;
+    //top: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: beige;
+    display: none;
+    position: fixed;
+    //z-index: 99999;
+    //justify-content: center;   // horizontal centering
+}
+
+#avatarOptions{
+    padding-left: 20px;
+}
+
+#avatarColourPicker{
+    width: 80px;
+}
+
+#cancelAvatarChanges{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.avatarTable{
+    width: 600px;
+    height: 600px;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    background-color:bisque;
+
+    border-collapse: collapse;
+    caret-color: transparent;
+
+    user-select: none;
+    touch-action: none;
+
+    td{
+        background-color: #ffffff;
+        border: 1px solid black;
+    }
+}
+
+.saveAvatarButton{
+    height: 40px;
+    left: 20px;
+    bottom: 50px;
+    position: absolute;
+}
+//END Avatar creation modal
 
 .drawing-toolbar{
     height: 100vh; /* Full-height: remove this if you want "auto" height */
@@ -192,56 +276,6 @@ body {
     width: 100%;
     height: 40px;
 }
-
-/*#btnColourContainer{
-    width: 93%;
-}*/
-
-/*#colourContainer{
-    background: lightblue;
-    display: none;
-    position: absolute;
-    left: 10%;
-    top: 0;
-    width: 80%;
-    height: 100%;
-    z-index: 3;
-}
-
-#btnColour{
-    background: lightgray;
-    width: 100%;
-    height: 100%;
-}
-
-#colourMenu{
-    background: rgb(98, 101, 102);
-    border-style: solid;
-    border-color: #818181;
-    display: none;
-    position: fixed;
-    left: 10%;
-    top: 30%;
-    width: 80%;
-    height: 10%;
-    z-index: 3;
-}
-
-.svgBtnColour{
-    width: 0;
-    height: 0;
-    display:inline-block;
-    background: gray;
-}
-
-.rectBtnColour{
-    position:relative;
-    display:block;
-    width:100%;
-    height:100%;
-    fill: gray;
-    z-index: 5;
-}*/
 
 /*General*/
 .selected{
