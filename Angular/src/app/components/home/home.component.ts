@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('bucketButton', { static: true }) bucketButton!: HTMLInputElement;
   @ViewChild('eraserButton', { static: true }) eraserButton!: ElementRef;
   @ViewChild('bombButton', { static: true }) bombButton!: ElementRef;
+  @ViewChild('selectedColourPicker', { static: true }) selectedColourPicker!: ElementRef;
 
   @ViewChild('btnColourContainer', { static: true }) btnColourContainer!: ElementRef;
   @ViewChild('colourMenu', { static: true }) colourMenu!: ElementRef;
@@ -47,9 +48,9 @@ export class HomeComponent implements OnInit {
   selectableToolButtons: any = [];
   selectedTool: any;
   isPencilMenuDisplayed: boolean;
-  isColourMenuDisplayed: boolean;
+  /*isColourMenuDisplayed: boolean;
   colourButtonWidth: number;
-  colourButtonHeight: number;
+  colourButtonHeight: number;*/
 
   brushRadius: any;
 
@@ -119,9 +120,9 @@ export class HomeComponent implements OnInit {
     this.selectedTool = null;
 
     this.isPencilMenuDisplayed = false;
-    this.isColourMenuDisplayed = false;
+    /*this.isColourMenuDisplayed = false;
     this.colourButtonHeight = 0;
-    this.colourButtonWidth = 0;
+    this.colourButtonWidth = 0;*/
     
     this.brushRadius = 0;
 
@@ -322,7 +323,9 @@ export class HomeComponent implements OnInit {
   }
 
   showColoursButtonHandler(){
-    this.isColourMenuDisplayed = !this.isColourMenuDisplayed;
+    //this.isColourMenuDisplayed = !this.isColourMenuDisplayed;
+    //console.log("Should show");
+    this.selectedColourPicker.nativeElement.showPicker();
     this.selectAudio.play();
   }
 
@@ -330,7 +333,7 @@ export class HomeComponent implements OnInit {
     this.drawingCanvas.colourSelected = colour;
     this.drawingCanvas.context.strokeStyle = colour;
 
-    this.isColourMenuDisplayed = false;
+    //this.isColourMenuDisplayed = false;
 
     this.selectAudio.play();
 
@@ -786,6 +789,9 @@ export class HomeComponent implements OnInit {
                 this.redoButtonClickHandler();
             }
             break;
+        case "t":
+        case "T":
+            break;
     }
   }
 
@@ -798,7 +804,7 @@ export class HomeComponent implements OnInit {
 
     //If colour menu is displayed, hide
     if(!((e.target as Element).classList.contains("svgBtnColour"))){
-        this.isColourMenuDisplayed = false;
+        //this.isColourMenuDisplayed = false;
     }
 }
 
