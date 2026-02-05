@@ -7,6 +7,7 @@ let drawing_width_limit = 1100;
 let drawing_height_limit = 800;
 let message_length_limit = 128;
 let username_length_limit = 16;
+let avatar_length_limit = 9 ** 2;
 
 const Drawings = {
 
@@ -14,6 +15,8 @@ const Drawings = {
       try{ 
         //console.log("Received message:");
         //console.log(message);
+
+        this.validate(message);
 
         if(message_list.length >= message_limit){
           message_list.shift();
@@ -33,6 +36,7 @@ const Drawings = {
 
         message_list.push(drawing);*/
       }catch (error) {
+        console.log(error)
         return error;
       }
     },
@@ -79,6 +83,11 @@ const Drawings = {
         if(message.username > username_length_limit){
           throw("Username is too long");
         }
+
+        if(message.avatar.length > avatar_length_limit)
+          throw("Avatar data is too big");
+
+        //TODO Check that avatar data within all is string and doesn't go over the limit of characters
 
       } catch (error) {
         return error;

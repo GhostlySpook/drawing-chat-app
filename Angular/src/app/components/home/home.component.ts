@@ -64,6 +64,7 @@ export class HomeComponent implements OnInit {
   isZoomedModalImage: boolean;
 
   avatarPixelData: Array<string>;
+  avatarSize: number;
   //avatarModalVisible: boolean;
   selectedAvatarColour: string;
 
@@ -93,14 +94,15 @@ export class HomeComponent implements OnInit {
     }
 
     //Load Avatar!
+    this.avatarSize = 9;
     let storagedAvatar = localStorage.getItem('avatar');
     if(storagedAvatar == null){
       console.log("Didn't find avatar")
-      this.avatarPixelData = [].constructor(64).fill("#ffffff")
+      this.avatarPixelData = [].constructor(this.avatarSize ** 2).fill("#ffffff")
     }
     else{
       this.avatarPixelData = JSON.parse(storagedAvatar);
-      console.log("Found avatar!", this.avatarPixelData)
+      //console.log("Found avatar!", this.avatarPixelData)
     }
 
     this.conversionCanvas = document.createElement("canvas");
@@ -389,7 +391,7 @@ export class HomeComponent implements OnInit {
 
       for(let col = 0; col < row.cells.length; col++){
         let cell = row.cells[col]
-        cell.style.backgroundColor = this.avatarPixelData[rowNum*8 + col];
+        cell.style.backgroundColor = this.avatarPixelData[rowNum*this.avatarSize + col];
       }
     }
 
@@ -436,7 +438,7 @@ export class HomeComponent implements OnInit {
 
       for(let col = 0; col < row.cells.length; col++){
         let cell = row.cells[col]
-        this.avatarPixelData[rowNum*8 + col] = cell.style.backgroundColor;
+        this.avatarPixelData[rowNum*this.avatarSize + col] = cell.style.backgroundColor;
       }
     }
 
@@ -517,10 +519,10 @@ export class HomeComponent implements OnInit {
             //Create an image inside a canvas using the new ImageData and add it to the imagesPaths variable to display them
             conversionContext.putImageData(idata, 0, 0);
             //this.imagesPaths.push(this.conversionCanvas.toDataURL("image/png"));
-            this.messageList.push({path: this.conversionCanvas.toDataURL("image/png"), text: item.textMessage, username: item.username});
+            this.messageList.push({path: this.conversionCanvas.toDataURL("image/png"), text: item.textMessage, username: item.username, avatar: item.avatar});
           }
           else{
-            this.messageList.push({path: null, text: item.textMessage, username: item.username});
+            this.messageList.push({path: null, text: item.textMessage, username: item.username, avatar: item.avatar});
           }
         }
 
@@ -603,7 +605,7 @@ export class HomeComponent implements OnInit {
           //Create an image inside a canvas using the new ImageData and add it to the imagesPaths variable to display them
           conversionContext.putImageData(idata, 0, 0);
 
-          this.messageList.push({path: this.conversionCanvas.toDataURL("image/png"), text: item.textMessage, username: item.username});
+          this.messageList.push({path: this.conversionCanvas.toDataURL("image/png"), text: item.textMessage, username: item.username, avatar: item.avatar});
           //this.imagesPaths.push(this.conversionCanvas.toDataURL("image/png"));
         }
 
@@ -631,6 +633,7 @@ export class HomeComponent implements OnInit {
       this.messageState = "Sending";
 
       let drawingMessage: DrawingMessage = {
+        avatar: this.avatarPixelData,
         data: null,
         width: null,
         height: null,
@@ -700,6 +703,7 @@ export class HomeComponent implements OnInit {
       imagedata = conversionContext.getImageData(0, 0, this.conversionCanvas.width, this.conversionCanvas.height)
 
       let drawingMessage: DrawingMessage = {
+        avatar: this.avatarPixelData,
         data: imagedata.data,
         width: imagedata.width,
         height: imagedata.height,

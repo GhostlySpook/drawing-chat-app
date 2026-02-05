@@ -3,10 +3,21 @@
     <!--Chat container where messages are added-->
     <div #chatContainer class="chatContainer" (scroll)="scrollChatContainerHandler()">
         <div class="drawingContainer" *ngFor='let message of messageList'>
-            <b>{{message.username}} 
+            <div class="messageUserDataDiv">
+                <!--Avatar-->
+                <table *ngIf="message.avatar != null" class="avatarMessageTable">
+                    <tr *ngFor='let _ of [].constructor(this.avatarSize); let rowIndex = index'>
+                        <td *ngFor='let _ of [].constructor(this.avatarSize); let colIndex = index' 
+                            [ngStyle]="{'background-color': message.avatar[rowIndex*this.avatarSize+colIndex]}"
+                        >
+                        </td>
+                    </tr>
+                </table>
+                <!--END Avatar-->
+                <b class="messageUsername">{{message.username}}</b>
                 <button *ngIf="message.path != null" class="redrawButton" (click)="copyDrawingIntoCanvas(message.path)">Redraw</button>
-            </b>
-            <p>{{message.text}}</p>
+            </div>
+            <p class="messageText">{{message.text}}</p>
             <div *ngIf="message.path != null">
                 <img (click)="openMessageModal(message)" (load)="scrollChatContainerDown()" class="messageDrawing" src={{message.path}}>
             </div>
@@ -20,11 +31,11 @@
     <!--button (click)="testingFunction()">Test!</button>
     <button (click)="testingLoadFunction()">Test Load</button-->
     <div id="userDataDiv">
-        <table (click)="showAvatarModal()" #avatarChatTable class="avatarChatTable" id="avatarChatTable">
-            <tr *ngFor='let _ of [].constructor(8); let rowIndex = index'>
-                <td [attr.pixelId]="rowIndex*8+colIndex" 
-                    *ngFor='let _ of [].constructor(8); let colIndex = index' 
-                    [ngStyle]="{'background-color': avatarPixelData[rowIndex*8+colIndex]}"
+        <table (click)="showAvatarModal()" class="avatarChatTable" id="avatarChatTable">
+            <tr *ngFor='let _ of [].constructor(this.avatarSize); let rowIndex = index'>
+                <td [attr.pixelId]="rowIndex*this.avatarSize+colIndex" 
+                    *ngFor='let _ of [].constructor(this.avatarSize); let colIndex = index' 
+                    [ngStyle]="{'background-color': avatarPixelData[rowIndex*this.avatarSize+colIndex]}"
                 >
                 </td>
             </tr>
@@ -58,24 +69,7 @@
     <input #bombButton (click)="bombButtonClickHandler()" type="image" src="assets/img/btnBomb.png" class="toolButton" id="bombButton" style="display: none"
         [class.selected]="this.drawingCanvas.toolSelected == 3"
         [style.display]="this.drawingCanvas.toolSelected == 3 ? 'block' : 'none'"/>
-
-    <!--Colour button-->
-    <!--div class="toolButton" #btnColourContainer (click)="showColoursButtonHandler()"
-        [style.height]="btnColourContainer.clientWidth + 'px'"
-        [style.background]="this.drawingCanvas.colourSelected"></div-->
-    <!--The container where colours are found-->
-    <!--div #colourMenu id="colourMenu"
-        [style.display]="isColourMenuDisplayed ? 'block' : 'none' "-->
-        <!--The colours to be chosen-->
-        <!--svg *ngFor='let colour of this.drawingCanvas.getHexColours()'
-            class="svgBtnColour"
-            (click)="colourButtonHandler(colour)"
-            [style.width]="colourButtonWidth + 'px'"
-            [style.height]="colourButtonHeight + 'px'"
-            [style.background]="colour"
-        >{{colour}}</svg>
-    </div-->
-
+    
     <input type="color" id="selectedColourPicker" value="#000000" (change)="selectColour($event)"/>
     
     <!--Redo buttons-->
@@ -102,7 +96,7 @@
     </div>
 </div>
 
-<!--Show drawing selected-->
+<!--Avatar editor modal-->
 <div #avatarModal id="avatarModal" class="avatarModal">
     <button id="cancelAvatarChanges" (click)="hideAvatarModal()">Cancel</button>
     <div id="avatarOptions">
@@ -113,19 +107,15 @@
         <button (click)="fillAvatar()">Fill all with color</button>
     </div>
     <table #avatarTable class="avatarTable" id="avatarTable">
-        <tr *ngFor='let _ of [].constructor(8); let rowIndex = index'>
-            <td [attr.pixelId]="rowIndex*8+colIndex" 
-                *ngFor='let _ of [].constructor(8); let colIndex = index' 
+        <tr *ngFor='let _ of [].constructor(this.avatarSize); let rowIndex = index'>
+            <td [attr.pixelId]="rowIndex*this.avatarSize+colIndex" 
+                *ngFor='let _ of [].constructor(this.avatarSize); let colIndex = index' 
                 (pointerdown)="fillAvatarPixel($event)"
-                [ngStyle]="{'background-color': avatarPixelData[rowIndex*8+colIndex]}"
+                [ngStyle]="{'background-color': avatarPixelData[rowIndex*this.avatarSize+colIndex]}"
             >
             </td>
         </tr>
     </table>
 
     <button class="saveAvatarButton" (click)="saveAvatar()">Save Avatar</button>
-    <!--div class="opaqueBackground" (click)="closeAvatarModal()"></div-->
-    <!--div class="modalImageContainer">
-        <img #modalImage src={{modalData.path}} (click)="zoomModalImage()" [ngClass]="{'zoom-in': isZoomedModalImage === true}">
-    </div-->
 </div>

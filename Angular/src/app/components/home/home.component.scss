@@ -12,6 +12,29 @@ body {
     overflow: hidden;
     position: relative;
 
+    #userDataDiv{
+        padding-top: 10px;
+        padding-left: 10px;
+        width: 100%;
+        display: block;
+
+        table{
+            width: 40px;
+            height: 40px;
+            float: left;
+            border-collapse: collapse;
+            caret-color: transparent;
+
+            user-select: none;
+            touch-action: none;
+        }
+
+        p{
+            float: left;
+            width: 90%;
+        }
+    }
+
     button{
         margin-left: 3px;
     }
@@ -56,29 +79,6 @@ body {
     height:90%;
 }
 
-#userDataDiv{
-    padding-top: 10px;
-    padding-left: 10px;
-    width: 100%;
-    display: block;
-
-    table{
-        width: 40px;
-        height: 40px;
-        float: left;
-        border-collapse: collapse;
-        caret-color: transparent;
-
-        user-select: none;
-        touch-action: none;
-    }
-
-    p{
-        float: left;
-        width: 90%;
-    }
-}
-
 .drawingContainer{
     //height: 30%!important;
     margin-top: 10px;
@@ -89,14 +89,46 @@ body {
     text-align: center;
 }
 
-.redrawButton{
-    float: right;
-    margin-right: 10px;
+.messageUserDataDiv{
+    display: block;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    width: 98%;
+    float: left;
+
+    .avatarMessageTable{
+        width: 30px;
+        height: 30px;
+        float: left;
+        border-collapse: collapse;
+        caret-color: transparent;
+
+        user-select: none;
+        touch-action: none;
+    }
+
+    .messageUsername{
+        float: left;
+        margin-left: 10px;
+        //margin: 0;
+        //width: 50%;
+        //display: inline;
+    }
+
+    .redrawButton{
+        //right: 10px;
+        float: right;
+        margin-right: 20px;
+    }
+}
+
+.messageText{
+    display: block;
 }
 
 .messageDrawing{
     max-height: 100%;
-    max-width: 100%;
+    max-width: 98%;
     object-fit: cover;
     background-color: white;
     cursor: pointer;
