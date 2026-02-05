@@ -163,6 +163,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  sendKeypressHandler(e: any){
+    if(e.key == 'Enter'){
+      console.log("To send")
+      this.sendMessage();
+    }
+  }
+
   sendButtonHandler(){
     this.sendMessage();
   }
@@ -226,9 +233,11 @@ export class HomeComponent implements OnInit {
   }
 
   copyDrawingIntoCanvas(path: any){
-    console.log(path)
+    //console.log(path)
     let image = new Image()
     image.src = path;
+
+    console.log("Pressed")
 
     this.drawingCanvas.context.drawImage(image, 0, 0, 1100, 800)
     this.drawingCanvas.addRedo(this.drawingCanvas.getCanvasImage())

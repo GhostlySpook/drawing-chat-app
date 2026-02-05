@@ -21,15 +21,12 @@
             <div *ngIf="message.path != null">
                 <img (click)="openMessageModal(message)" (load)="scrollChatContainerDown()" class="messageDrawing" src={{message.path}}>
             </div>
-            <hr class="dashed">
+            <hr class="dashed" style="width: 95%;">
         </div>
     </div>
-    <input #textInput [(ngModel)]="textMessageInput" class="textInput" maxlength="128">
+    <input #textInput (keypress)="sendKeypressHandler($event)" [(ngModel)]="textMessageInput" class="textInput" maxlength="128">
     <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled || textMessageInput === '' || usernameInput===''">Send</button>
-    <!--button #loadButton (click)="loadButtonHandler()" [disabled]="!isButtonEnabled">Load</button-->
-    <!--button #sendDrawingButton (click)="sendDrawingButtonHandler()" [disabled]="!isButtonEnabled">Send Drawing</button-->
-    <!--button (click)="testingFunction()">Test!</button>
-    <button (click)="testingLoadFunction()">Test Load</button-->
+
     <div id="userDataDiv">
         <table (click)="showAvatarModal()" class="avatarChatTable" id="avatarChatTable">
             <tr *ngFor='let _ of [].constructor(this.avatarSize); let rowIndex = index'>
@@ -41,7 +38,6 @@
             </tr>
         </table>
         <p>User:<input [(ngModel)]="usernameInput" class="usernameInput" maxlength="16" (keypress)="userNameInputKeypressHandler($event);" (blur)="saveUsernameInCookie();"><span> State: {{messageState}}</span>
-        <!--button (click)="showAvatarModal()">Open avatar editor</button></p-->
     </div>
 </div>
 
