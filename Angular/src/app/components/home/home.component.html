@@ -24,8 +24,8 @@
             <hr class="dashed" style="width: 95%;">
         </div>
     </div>
-    <input #textInput (keypress)="sendKeypressHandler($event)" [(ngModel)]="textMessageInput" class="textInput" maxlength="128">
-    <button #sendButton (click)="sendButtonHandler()" [disabled]="!isButtonEnabled || textMessageInput === '' || usernameInput===''">Send</button>
+    <input #textInput (keypress)="sendKeypressHandler($event)" [(ngModel)]="textMessageInput" class="textInput" maxlength="128" [placeholder]="'Insert your message here :-)'">
+    <button #sendButton class="sendButton" (click)="sendButtonHandler()" [disabled]="!isButtonEnabled || textMessageInput === '' || usernameInput===''">Send</button>
 
     <div id="userDataDiv">
         <table (click)="showAvatarModal()" class="avatarChatTable" id="avatarChatTable">
