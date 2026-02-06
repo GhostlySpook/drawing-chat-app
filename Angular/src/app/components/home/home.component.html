@@ -51,7 +51,8 @@
         [style.display]="this.drawingCanvas.toolSelected == 1 ? 'block' : 'none'"/>
     <div #pencilMenu id="pencilMenu"
         [style.display]="this.isPencilMenuDisplayed ? 'block' : 'none'">
-        <input #sizeRange [(ngModel)]="this.drawingCanvas.brushRadius" (change)="sizeRangeChangeHandler()" type="range" id="sizeRange" min="2" max="20" step="2">
+        <input [(ngModel)]="this.drawingCanvas.brushRadius" (change)="sizeRangeChangeHandler()" type="number" id="sizeNumber" min="2" max="80">
+        <input #sizeRange [(ngModel)]="this.drawingCanvas.brushRadius" (change)="sizeRangeChangeHandler()" type="range" id="sizeRange" min="2" max="80" step="2">
     </div>
 
     <!--Bucket button-->
